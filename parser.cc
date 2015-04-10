@@ -49,6 +49,13 @@ Mvh, Elin
 #include <string>
 #include <sstream>
 #include <cmath>
+#include <utility>
+
+std::pair<double,double> transform(double accumulatedAngle, double distance, double fieldOfView){
+  double x = distance*sin((fieldOfView/2)-accumulatedAngle);
+  double y = distance*cos((fieldOfView/2)-accumulatedAngle);
+  return std::make_pair(x,y);
+}
 
 int main(void){
   std::string line;
@@ -76,10 +83,12 @@ int main(void){
     data >> floatval; //unknown
     double dist;
     int index = 0;
-    while(data >> dist){ //ditance for each point
+    while(data >> dist){ //distance for each point
+      std::pair<double,double> coords = transform(index*angle,dist,nbrPoints*angle);
+      std::cout << "Angle: " << index*angle << std::endl << "Distance: " << dist << std::endl << "xCoord: " << coords.first << std::endl << "yCoord: " << coords.second << std::endl;
       ++index;
     }
-    std::cout << "Field of view: " << nbrPoints*angle*180/(atan(1)*4) << std::endl;
+    //std::cout << "Field of view: " << nbrPoints*angle*180/(atan(1)*4) << std::endl;
     //std::cout << "nbrPoints: " << nbrPoints << std::endl << "parsedPoints: " << index << std::endl << "--------------------" << std::endl;
     correctAmount = (index == nbrPoints);
   }
