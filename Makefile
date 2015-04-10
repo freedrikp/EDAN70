@@ -24,7 +24,7 @@ all: $(PROGS)
 
 # Targets rely on implicit rules for compiling and linking
 
-parser: parser.o
+parser: parser.o point.o
 
 # Phony targets
 .PHONY: all clean

@@ -9,7 +9,7 @@ private:
   double distance;
   double xCoord;
   double yCoord;
-}
+};
 
 
 

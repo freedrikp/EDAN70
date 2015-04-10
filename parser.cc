@@ -50,14 +50,26 @@ Mvh, Elin
 #include <sstream>
 #include <cmath>
 #include <utility>
+#include <vector>
+#include "point.h"
 
 std::pair<double,double> transform(double accumulatedAngle, double distance, double fieldOfView){
-  double x = distance*sin((fieldOfView/2)-accumulatedAngle);
-  double y = distance*cos((fieldOfView/2)-accumulatedAngle);
+  double angle;
+  int sign;
+  if ((fieldOfView/2) > accumulatedAngle){
+      angle = fieldOfView/2 - accumulatedAngle;
+      sign = -1;
+  }else{
+      angle = accumulatedAngle - fieldOfView/2;
+      sign = 1;
+  }
+  double x = sign*distance*sin(angle);
+  double y = distance*cos(angle);
   return std::make_pair(x,y);
 }
 
 int main(void){
+  std::vector<Point> vec;
   std::string line;
   bool correctAmount = true;
   while (correctAmount && getline(std::cin,line)){
@@ -86,6 +98,8 @@ int main(void){
     while(data >> dist){ //distance for each point
       std::pair<double,double> coords = transform(index*angle,dist,nbrPoints*angle);
       std::cout << "Angle: " << index*angle << std::endl << "Distance: " << dist << std::endl << "xCoord: " << coords.first << std::endl << "yCoord: " << coords.second << std::endl;
+      Point p(nbrPoints*angle,dist,coords.first,coords.second);
+      vec.push_back(p);
       ++index;
     }
     //std::cout << "Field of view: " << nbrPoints*angle*180/(atan(1)*4) << std::endl;

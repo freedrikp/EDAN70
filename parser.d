@@ -1,1 +1,1 @@
-parser.o parser.d : parser.cc
+parser.o parser.d : parser.cc point.h
