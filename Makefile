@@ -31,7 +31,7 @@ parser: parser.o point.o
 
 # Standard clean
 clean:
-	rm -f *.o $(PROGS)
+	rm -f *.o $(PROGS) plot*.txt
 
 # Generate dependencies in *.d files
 %.d: %.cc

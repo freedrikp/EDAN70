@@ -52,6 +52,9 @@ Mvh, Elin
 #include <utility>
 #include <vector>
 #include "point.h"
+#include <fstream>
+
+#define PLOTS 11
 
 std::pair<double,double> transform(double accumulatedAngle, double distance, double fieldOfView){
   double angle;
@@ -69,10 +72,15 @@ std::pair<double,double> transform(double accumulatedAngle, double distance, dou
 }
 
 int main(void){
+  std::ofstream file;
   std::vector<Point> vec;
   std::string line;
   bool correctAmount = true;
+  int lineNo = 1;
   while (correctAmount && getline(std::cin,line)){
+    if (lineNo < PLOTS){
+      file.open("plot" + std::to_string(lineNo) + ".txt");
+    }
     std::stringstream data(line);
     double floatval;
     long intval;
@@ -101,10 +109,18 @@ int main(void){
       Point p(nbrPoints*angle,dist,coords.first,coords.second);
       vec.push_back(p);
       ++index;
+      if (lineNo < PLOTS){
+        file << coords.first << " " << coords.second << std::endl;
+      }
     }
     //std::cout << "Field of view: " << nbrPoints*angle*180/(atan(1)*4) << std::endl;
     //std::cout << "nbrPoints: " << nbrPoints << std::endl << "parsedPoints: " << index << std::endl << "--------------------" << std::endl;
     correctAmount = (index == nbrPoints);
+    ++lineNo;
+    if (lineNo < PLOTS){
+      file.flush();
+      file.close();
+    }
   }
   if (correctAmount){
     std::cout << "Indicated number of points is equal to number of data points" << std::endl;
