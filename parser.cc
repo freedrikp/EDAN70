@@ -48,6 +48,7 @@ Mvh, Elin
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <cmath>
 
 int main(void){
   std::string line;
@@ -78,6 +79,7 @@ int main(void){
     while(data >> dist){ //ditance for each point
       ++index;
     }
+    std::cout << "Field of view: " << nbrPoints*angle*180/(atan(1)*4) << std::endl;
     //std::cout << "nbrPoints: " << nbrPoints << std::endl << "parsedPoints: " << index << std::endl << "--------------------" << std::endl;
     correctAmount = (index == nbrPoints);
   }
