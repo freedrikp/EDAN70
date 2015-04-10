@@ -1,0 +1,6 @@
+float64 lastScanTime
+int64 nScanPts
+float32[] scanPts
+float64 angStep
+float64 lastOdomTime
+geometry_msgs/Pose pose
