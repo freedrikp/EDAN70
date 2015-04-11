@@ -3,8 +3,15 @@
 
 class Point{
 public:
-  Point(double accumulatedAngle, double distance, double xCoord, double yCoord);
+  Point(int index, double accumulatedAngle, double distance, double xCoord, double yCoord);
+
+  int getIndex();
+  double getAccumulatedAngle();
+  double getDistance();
+  double getXCoord();
+  double getYCoord();
 private:
+  int index;
   double accumulatedAngle;
   double distance;
   double xCoord;

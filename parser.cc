@@ -50,11 +50,11 @@ Mvh, Elin
 #include <sstream>
 #include <cmath>
 #include <utility>
-#include <vector>
 #include "point.h"
-#include <fstream>
+#include "dataset.h"
 
-#define PLOTS 11
+#define PLOTSMAX 361
+#define PLOTSMIN 350
 
 std::pair<double,double> transform(double accumulatedAngle, double distance, double fieldOfView){
   double angle;
@@ -71,16 +71,17 @@ std::pair<double,double> transform(double accumulatedAngle, double distance, dou
   return std::make_pair(x,y);
 }
 
-int main(void){
-  std::ofstream file;
-  std::vector<Point> vec;
+int main(int argc, char* argv[]){
+  if (argc != 3){
+    std::cout << "Wrong arguemnts! Usage: ./parser plotmin plotmax" << std::endl;
+    exit(1);
+  }
+  int plotMin = std::stoi(std::string(argv[1]));
+  int plotMax = std::stoi(std::string(argv[2]));
   std::string line;
   bool correctAmount = true;
   int lineNo = 1;
   while (correctAmount && getline(std::cin,line)){
-    if (lineNo < PLOTS){
-      file.open("plot" + std::to_string(lineNo) + ".txt");
-    }
     std::stringstream data(line);
     double floatval;
     long intval;
@@ -96,31 +97,28 @@ int main(void){
     data >> floatval; //unknown
     data >> floatval; //unknown
     data >> floatval; //unknown
-    double angle;
-    data >> angle; //angle_increment
+    double angleInc;
+    data >> angleInc; //angle_increment
     data >> floatval; //unknown
     data >> floatval; //unknown
     data >> floatval; //unknown
+    Dataset set(std::to_string(lineNo),nbrPoints,angleInc);
     double dist;
     int index = 0;
     while(data >> dist){ //distance for each point
-      std::pair<double,double> coords = transform(index*angle,dist,nbrPoints*angle);
-      std::cout << "Angle: " << index*angle << std::endl << "Distance: " << dist << std::endl << "xCoord: " << coords.first << std::endl << "yCoord: " << coords.second << std::endl;
-      Point p(nbrPoints*angle,dist,coords.first,coords.second);
-      vec.push_back(p);
+      std::pair<double,double> coords = transform(index*angleInc,dist,nbrPoints*angleInc);
+      //std::cout << "Angle: " << index*angleInc << std::endl << "Distance: " << dist << std::endl << "xCoord: " << coords.first << std::endl << "yCoord: " << coords.second << std::endl;
+      Point p(index,nbrPoints*angleInc,dist,coords.first,coords.second);
+      set.addPoint(p);
       ++index;
-      if (lineNo < PLOTS){
-        file << coords.first << " " << coords.second << std::endl;
+      if (lineNo >= plotMin && lineNo <= plotMax){
+        set.outputPlotFile("plots");
       }
     }
     //std::cout << "Field of view: " << nbrPoints*angle*180/(atan(1)*4) << std::endl;
     //std::cout << "nbrPoints: " << nbrPoints << std::endl << "parsedPoints: " << index << std::endl << "--------------------" << std::endl;
     correctAmount = (index == nbrPoints);
     ++lineNo;
-    if (lineNo < PLOTS){
-      file.flush();
-      file.close();
-    }
   }
   if (correctAmount){
     std::cout << "Indicated number of points is equal to number of data points" << std::endl;

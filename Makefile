@@ -24,14 +24,14 @@ all: $(PROGS)
 
 # Targets rely on implicit rules for compiling and linking
 
-parser: parser.o point.o
+parser: parser.o point.o dataset.o
 
 # Phony targets
 .PHONY: all clean
 
 # Standard clean
 clean:
-	rm -f *.o $(PROGS) plot*.txt
+	rm -f *.o $(PROGS) plots/plot*
 
 # Generate dependencies in *.d files
 %.d: %.cc
