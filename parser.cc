@@ -113,13 +113,19 @@ int main(int argc, char* argv[]){
       Point p(index,index*angleInc,dist,coords.first,coords.second);
       set.addPoint(p);
       ++index;
-      if (lineNo >= plotMin && lineNo <= plotMax){
-        set.outputPlotFile("plots");
-      }
     }
     //std::cout << "Field of view: " << nbrPoints*angle*180/(atan(1)*4) << std::endl;
     //std::cout << "nbrPoints: " << nbrPoints << std::endl << "parsedPoints: " << index << std::endl << "--------------------" << std::endl;
-    correctAmount = (index == nbrPoints);
+    correctAmount = correctAmount ? (index == nbrPoints) : correctAmount;
+    if (!correctAmount)
+      break;
+
+
+    if (lineNo >= plotMin && lineNo <= plotMax){
+      set.outputPlotFile("plots");
+    }
+
+      //std::cout << lineNo << std::endl;
     ++lineNo;
   }
   if (correctAmount){
