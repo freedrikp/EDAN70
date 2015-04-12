@@ -103,12 +103,14 @@ int main(int argc, char* argv[]){
     data >> floatval; //unknown
     data >> floatval; //unknown
     Dataset set(std::to_string(lineNo),nbrPoints,angleInc);
+    double fieldOfView = (nbrPoints - 1)*angleInc;
+    //std::cout << fieldOfView*180/(atan(1)*4) << std::endl;
     double dist;
     int index = 0;
     while(data >> dist){ //distance for each point
-      std::pair<double,double> coords = transform(index*angleInc,dist,nbrPoints*angleInc);
+      std::pair<double,double> coords = transform(index*angleInc,dist,fieldOfView);
       //std::cout << "Angle: " << index*angleInc << std::endl << "Distance: " << dist << std::endl << "xCoord: " << coords.first << std::endl << "yCoord: " << coords.second << std::endl;
-      Point p(index,nbrPoints*angleInc,dist,coords.first,coords.second);
+      Point p(index,index*angleInc,dist,coords.first,coords.second);
       set.addPoint(p);
       ++index;
       if (lineNo >= plotMin && lineNo <= plotMax){
