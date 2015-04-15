@@ -48,8 +48,6 @@ Mvh, Elin
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <cmath>
-#include <utility>
 #include "point.h"
 #include "dataset.h"
 #include <vector>
@@ -57,20 +55,20 @@ Mvh, Elin
 #define PLOTSMAX 361
 #define PLOTSMIN 350
 
-std::pair<double,double> transform(double accumulatedAngle, double distance, double fieldOfView){
-  double angle;
-  int sign;
-  if ((fieldOfView/2) > accumulatedAngle){
-      angle = fieldOfView/2 - accumulatedAngle;
-      sign = -1;
-  }else{
-      angle = accumulatedAngle - fieldOfView/2;
-      sign = 1;
-  }
-  double x = sign*distance*sin(angle);
-  double y = distance*cos(angle);
-  return std::make_pair(x,y);
-}
+// std::pair<double,double> transform(double accumulatedAngle, double distance, double fieldOfView){
+//   double angle;
+//   int sign;
+//   if ((fieldOfView/2) > accumulatedAngle){
+//       angle = fieldOfView/2 - accumulatedAngle;
+//       sign = -1;
+//   }else{
+//       angle = accumulatedAngle - fieldOfView/2;
+//       sign = 1;
+//   }
+//   double x = sign*distance*sin(angle);
+//   double y = distance*cos(angle);
+//   return std::make_pair(x,y);
+// }
 
 
 Dataset parseDataset(std::string line, int lineNo){
@@ -100,9 +98,9 @@ Dataset parseDataset(std::string line, int lineNo){
   double dist;
   int index = 0;
   while(data >> dist){ //distance for each point
-    std::pair<double,double> coords = transform(index*angleInc,dist,fieldOfView);
+    //std::pair<double,double> coords = transform(index*angleInc,dist,fieldOfView);
     //std::cout << "Angle: " << index*angleInc << std::endl << "Distance: " << dist << std::endl << "xCoord: " << coords.first << std::endl << "yCoord: " << coords.second << std::endl;
-    Point p(index,index*angleInc,dist,coords.first,coords.second);
+    Point p(index,index*angleInc,dist,fieldOfView);//,coords.first,coords.second);
     set.addPoint(p);
     ++index;
   }
