@@ -29,8 +29,16 @@ Point::Point(int index, double accumulatedAngle, double distance, double fieldOf
 // Point::Point(int index, double accumulatedAngle, double distance, double xCoord, double yCoord) : index(index), accumulatedAngle(accumulatedAngle), distance(distance), xCoord(xCoord), yCoord(yCoord) {}
 
 
+void shiftAndTransform(double angle){
+  
+}
+
 int Point::getIndex(){
   return index;
+}
+
+void Point::setIndex(int index){
+  this->index = index;
 }
 
 double Point::getAccumulatedAngle(){

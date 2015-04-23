@@ -25,22 +25,23 @@ void Dataset::outputPlotFile(std::string dir){
 }
 }
 
-/*
-Kod för att plotta ut ett interval
-void Dataset::outputPlotFileInterval(std::string dir, double startAngle, double endAngle){
-	std::ofstream file;
+
+/*Kod för att plotta ut ett interval
+Dataset Dataset::datasetInterval(double startAngle, double endAngle){
+
 	int startIndex = ceil(startAngle/angleInc);
 	int endIndex = floor(endAngle/angleInc);
 	if(endIndex<startIndex)
 		std:cerr << "Invalid interval start: " << startAngle << " end: " << endAngle << std::endl;
+	Dataset set(name + "interval_start" + startAngle + "end" + endAngle,endIndex-startIndex,angleInc);
 	
-	file.open(dir + "/plot" + name + "start" + startAngle + "end" + endAngle + ".txt");
-	if(file.is_open()){
-		for(auto it = map.begin() + startIndex; it<=map.begin()+endIndex;it++){
-			file << it.second.getXCoord() << " " << it.second.getYCoord() << std::endl;	
+		for(int i = startIndex; i<=endIndex;++i){
+			Point p = map[i];
+			p.setIndex(i-startIndex);
+			p.shiftAndTransform(endAngle-startAngle);
+			set.addPoint(p);
 		}
-	}else{
-		std:cerr << "Could not open: " << dir  << "/plot" << name << "start"  << startAngle << "end" << endAngle << ".txt" << std::endl;
+	return set;
 	}
 */
 
