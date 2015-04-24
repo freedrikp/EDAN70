@@ -10,7 +10,8 @@ public:
   Dataset(std::string name, int nbrPoints, double angleInc);
   void addPoint(Point p);
 
-void outputPlotFile(std::string dir);
+  void outputPlotFile(std::string dir);
+  Dataset datasetInterval(double startAngle, double endAngle);
 
 private:
   std::string name;

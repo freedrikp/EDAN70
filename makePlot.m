@@ -1,10 +1,14 @@
 %for i=1:10
 
-files = dir('plot*.txt');
+d = 'plots/';
+
+files = dir(strcat(d,'plot*.txt'));
 for file = files'
 
+%load(strcat(d,file.name));
+
 %fileID = fopen(sprintf('%s%d%s', 'plot', i,'.txt'),'r');
-fileID = fopen(file.name);
+fileID = fopen(strcat(d,file.name));
 formatSpec = '%f %f';
 sizeA = [2 Inf];
 A = fscanf(fileID,formatSpec,sizeA);
@@ -19,5 +23,5 @@ set(figh,'visible','off');
 plot(X,Y,'-');
 %print(file.name,'-dpng');
 out = file.name(1:length(file.name)-4);
-saveas(figh,out,'jpg');
+saveas(figh,strcat('plots/',out),'jpg');
 end

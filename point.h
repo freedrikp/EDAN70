@@ -10,11 +10,16 @@ public:
 
   Point(int index, double accumulatedAngle, double distance, double fieldOfView);
 
+  Point(const Point& p) = default;
+  // Point& operator=(const Point& p) = delete;
+
   int getIndex();
+  void setIndex(int index);
   double getAccumulatedAngle();
   double getDistance();
   double getXCoord();
   double getYCoord();
+  void shiftAndTransform(double deltaAngle, double deltaDistance, double newFieldOfView);
 private:
   int index;
   double accumulatedAngle;

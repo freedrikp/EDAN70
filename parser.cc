@@ -142,6 +142,10 @@ int main(int argc, char* argv[]){
 
   std::vector<Dataset> vec = parseFile(std::cin, plotMin, plotMax);
 
+  for (int i = plotMin; i <= plotMax; ++i){
+    vec[i].datasetInterval(0,atan(1)*2).outputPlotFile("plots");
+  }
+
   // if (correctAmount){
   //   std::cout << "Indicated number of points is equal to number of data points" << std::endl;
   // }else{

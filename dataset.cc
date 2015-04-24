@@ -14,34 +14,40 @@ void Dataset::outputPlotFile(std::string dir){
   file.open(dir + "/plot" + name + ".txt");
 
   if (file.is_open()){
-  for (auto elem : map){
-    file << elem.second.getXCoord() << " " << elem.second.getYCoord() << std::endl;
+    for (auto elem : map){
+      file << elem.second.getXCoord() << " " << elem.second.getYCoord() << std::endl;
+    }
+
+    file.flush();
+    file.close();
+  }else{
+    std::cerr << "Could not open: " << dir << "/plot" << name << ".txt" << std::endl;
   }
-
-  file.flush();
-  file.close();
-}else{
-  std::cerr << "Could not open: " << dir << "/plot" << name << ".txt" << std::endl;
-}
 }
 
 
-/*Kod för att plotta ut ett interval
+/*Kod för att plotta ut ett interval*/
 Dataset Dataset::datasetInterval(double startAngle, double endAngle){
 
-	int startIndex = ceil(startAngle/angleInc);
-	int endIndex = floor(endAngle/angleInc);
-	if(endIndex<startIndex)
-		std:cerr << "Invalid interval start: " << startAngle << " end: " << endAngle << std::endl;
-	Dataset set(name + "interval_start" + startAngle + "end" + endAngle,endIndex-startIndex,angleInc);
-	
-		for(int i = startIndex; i<=endIndex;++i){
-			Point p = map[i];
-			p.setIndex(i-startIndex);
-			p.shiftAndTransform(endAngle-startAngle);
-			set.addPoint(p);
-		}
-	return set;
-	}
-*/
+  int startIndex = ceil(startAngle/angleInc);
+  int endIndex = ceil(endAngle/angleInc);
+  if(endIndex<startIndex){
+    std::cerr << "Invalid interval start: " << startAngle << " end: " << endAngle << std::endl;
+  }
 
+  Dataset set(name + "interval_start" + std::to_string(startIndex) + "end" + std::to_string(endIndex),endIndex-startIndex+1,angleInc);
+
+  double newFieldOfView = endAngle - startAngle;
+
+  // std::cout << "StartIndex: " << startIndex << " | "<< "EndIndex: " << endIndex << std::endl;
+
+
+  for(int i = startIndex; i<=endIndex;++i){
+    Point p = map.find(i)->second;
+    p.setIndex(i-startIndex);
+
+    p.shiftAndTransform(-startAngle,0,newFieldOfView);
+    set.addPoint(p);
+  }
+  return set;
+}
