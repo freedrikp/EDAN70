@@ -32,7 +32,7 @@ Dataset Dataset::datasetInterval(double startAngle, double endAngle, double dist
   // int startIndex = ceil(startAngle/angleInc);
   // int endIndex = ceil(endAngle/angleInc);
   int startIndex = ceil(startAngle/angleInc);
-  int endIndex = ceil(endAngle/angleInc);
+  int endIndex = floor(endAngle/angleInc);
   if(endIndex<startIndex){
     std::cerr << "Invalid interval start: " << startAngle << " end: " << endAngle << std::endl;
   }
