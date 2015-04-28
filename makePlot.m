@@ -5,7 +5,6 @@ d = 'plots/';
 files = dir(strcat(d,'plot*.txt'));
 for file = files'
 fullname = strcat(d,file.name);
-
 A = load(fullname);
 
 %fileID = fopen(fullname);
@@ -26,3 +25,5 @@ out = file.name(1:length(file.name)-4);
 saveas(figh,strcat('plots/',out),'jpg');
 
 end
+
+printf("Done!\n");

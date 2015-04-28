@@ -29,6 +29,8 @@ void Dataset::outputPlotFile(std::string dir){
 /*Kod för att plotta ut ett interval*/
 Dataset Dataset::datasetInterval(double startAngle, double endAngle, double distance){
 
+  // int startIndex = ceil(startAngle/angleInc);
+  // int endIndex = ceil(endAngle/angleInc);
   int startIndex = ceil(startAngle/angleInc);
   int endIndex = ceil(endAngle/angleInc);
   if(endIndex<startIndex){

@@ -6,10 +6,10 @@ double angle;
 int sign;
 if ((fieldOfView/2) > accumulatedAngle){
   angle = fieldOfView/2 - accumulatedAngle;
-  sign = -1;
+  sign = 1;
 }else{
   angle = accumulatedAngle - fieldOfView/2;
-  sign = 1;
+  sign = -1;
 }
 // double x = sign*distance*sin(angle);
 // double y = distance*cos(angle);

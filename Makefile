@@ -33,6 +33,9 @@ parser: parser.o point.o dataset.o
 clean:
 	rm -f *.o $(PROGS) plots/plot*
 
+cp:
+		rm -f plots/plot*
+
 # Generate dependencies in *.d files
 %.d: %.cc
 	@set -e; rm -f $@; \
