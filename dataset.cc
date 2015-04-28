@@ -27,7 +27,7 @@ void Dataset::outputPlotFile(std::string dir){
 
 
 /*Kod för att plotta ut ett interval*/
-Dataset Dataset::datasetInterval(double startAngle, double endAngle){
+Dataset Dataset::datasetInterval(double startAngle, double endAngle, double distance){
 
   int startIndex = ceil(startAngle/angleInc);
   int endIndex = ceil(endAngle/angleInc);
@@ -39,15 +39,16 @@ Dataset Dataset::datasetInterval(double startAngle, double endAngle){
 
   double newFieldOfView = endAngle - startAngle;
 
-  // std::cout << "StartIndex: " << startIndex << " | "<< "EndIndex: " << endIndex << std::endl;
+  //  std::cout << "StartIndex: " << startIndex << " | "<< "EndIndex: " << endIndex << std::endl;
 
 
   for(int i = startIndex; i<=endIndex;++i){
     Point p = map.find(i)->second;
-    p.setIndex(i-startIndex);
-
-    p.shiftAndTransform(-startAngle,0,newFieldOfView);
-    set.addPoint(p);
+    if (p.getDistance() <= distance){
+      p.setIndex(i-startIndex);
+      p.shiftAndTransform(-startAngle,0,newFieldOfView);
+      set.addPoint(p);
+    }
   }
   return set;
 }

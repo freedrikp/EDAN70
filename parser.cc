@@ -52,8 +52,8 @@ Mvh, Elin
 #include "dataset.h"
 #include <vector>
 
-#define PLOTSMAX 361
-#define PLOTSMIN 350
+// #define PLOTSMAX 361
+// #define PLOTSMIN 350
 
 // std::pair<double,double> transform(double accumulatedAngle, double distance, double fieldOfView){
 //   double angle;
@@ -100,14 +100,14 @@ Dataset parseDataset(std::string line, int lineNo){
   while(data >> dist){ //distance for each point
     //std::pair<double,double> coords = transform(index*angleInc,dist,fieldOfView);
     //std::cout << "Angle: " << index*angleInc << std::endl << "Distance: " << dist << std::endl << "xCoord: " << coords.first << std::endl << "yCoord: " << coords.second << std::endl;
-    Point p(index,index*angleInc,dist,fieldOfView);//,coords.first,coords.second);
+    Point p(index,fieldOfView-(index*angleInc),dist,fieldOfView);//,coords.first,coords.second);
     set.addPoint(p);
     ++index;
   }
   return set;
 }
 
-std::vector<Dataset> parseFile(std::istream& stream, int plotMin, int plotMax){
+std::vector<Dataset> parseFile(std::istream& stream){//, int plotMin, int plotMax){
   std::vector<Dataset> vec;
   std::string line;
   bool correctAmount = true;
@@ -120,10 +120,10 @@ std::vector<Dataset> parseFile(std::istream& stream, int plotMin, int plotMax){
     //if (!correctAmount)
     //  break;
 
-
-    if (lineNo >= plotMin && lineNo <= plotMax){
-      set.outputPlotFile("plots");
-    }
+    //
+    // if (lineNo >= plotMin && lineNo <= plotMax){
+    //   set.outputPlotFile("plots");
+    // }
     vec.push_back(set);
       //std::cout << lineNo << std::endl;
     ++lineNo;
@@ -132,18 +132,22 @@ std::vector<Dataset> parseFile(std::istream& stream, int plotMin, int plotMax){
 }
 
 int main(int argc, char* argv[]){
-  if (argc != 3){
-    std::cout << "Wrong arguemnts! Usage: ./parser plotmin plotmax" << std::endl;
-    exit(1);
-  }
+  // if (argc != 3){
+  //   std::cout << "Wrong arguemnts! Usage: ./parser plotmin plotmax" << std::endl;
+  //   exit(1);
+  // }
 
-  int plotMin = std::stoi(std::string(argv[1]));
-  int plotMax = std::stoi(std::string(argv[2]));
+  // int plotMin = std::stoi(std::string(argv[1]));
+  // int plotMax = std::stoi(std::string(argv[2]));
 
-  std::vector<Dataset> vec = parseFile(std::cin, plotMin, plotMax);
+  std::vector<Dataset> vec = parseFile(std::cin);//, plotMin, plotMax);
 
-  for (int i = plotMin; i <= plotMax; ++i){
-    vec[i].datasetInterval(0,atan(1)*2).outputPlotFile("plots");
+  // for (int i = plotMin; i <= plotMax; ++i){
+  //   vec[i].datasetInterval(0,atan(1)*2).outputPlotFile("plots");
+  // }
+
+  for (Dataset set : vec){
+    set.datasetInterval(0,atan(1)*4,5).outputPlotFile("plots");
   }
 
   // if (correctAmount){
