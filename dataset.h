@@ -13,6 +13,8 @@ public:
   void outputPlotFile(std::string dir);
   Dataset datasetInterval(double startAngle, double endAngle, double distance);
 
+  void outputDatasetFile(std::string dir);
+  static Dataset parseDatasetFile(std::string name);
 private:
   std::string name;
   int nbrPoints;

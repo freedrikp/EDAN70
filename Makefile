@@ -31,10 +31,10 @@ parser: parser.o point.o dataset.o
 
 # Standard clean
 clean:
-	rm -f *.o $(PROGS) plots/plot*
+	rm -f *.o $(PROGS)
 
-cp:
-		rm -f plots/plot*
+clear:
+		rm -f plots/plot* matlab/* datasets/*
 
 # Generate dependencies in *.d files
 %.d: %.cc

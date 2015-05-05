@@ -156,7 +156,9 @@ int main(int argc, char* argv[]){
   // }
 
   for (Dataset set : vec){
-    set.datasetInterval((startAngle/180)*atan(1)*4,(endAngle/180)*atan(1)*4,distance).outputPlotFile("plots");
+    Dataset data = set.datasetInterval((startAngle/180)*atan(1)*4,(endAngle/180)*atan(1)*4,distance);
+    data.outputPlotFile("plots");
+    data.outputDatasetFile("datasets");
   }
 
   //file.close();

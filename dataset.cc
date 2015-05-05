@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <math.h>
+#include <fstream>
 
 Dataset::Dataset(std::string name, int nbrPoints, double angleInc) : name(name), nbrPoints(nbrPoints), angleInc(angleInc) {}
 
@@ -53,4 +54,51 @@ Dataset Dataset::datasetInterval(double startAngle, double endAngle, double dist
     }
   }
   return set;
+}
+
+void Dataset::outputDatasetFile(std::string dir){
+  std::ofstream file;
+  file.open(dir + "/dataset" + name + ".txt");
+
+  if (file.is_open()){
+    file << name << std::endl;
+    file << nbrPoints << std::endl;
+    file << angleInc << std::endl;
+    for (auto elem : map){
+      file << elem.first << " " << elem.second.getAccumulatedAngle() << " " << elem.second.getDistance() << std::endl;
+    }
+
+    file.flush();
+    file.close();
+  }else{
+    std::cerr << "Could not open: " << dir << "/plot" << name << ".txt" << std::endl;
+  }
+}
+
+Dataset Dataset::parseDatasetFile(std::string name){
+  std::ifstream file(name);
+  if (file.is_open()){
+    std::string name;
+    int nbrPoints;
+    double angleInc;
+    file >> name;
+    file >> nbrPoints;
+    file >> angleInc;
+    double fieldOfView = (nbrPoints - 1)*angleInc;
+    Dataset set(name,nbrPoints,angleInc);
+    for (int i = 0; i != nbrPoints; ++i){
+      int index;
+      double accumulatedAngle;
+      double distance;
+      file >> index;
+      file >> accumulatedAngle;
+      file >> distance;
+      Point p(index,accumulatedAngle,distance,fieldOfView);
+      set.addPoint(p);
+    }
+    file.close();
+    return set;
+  }else{
+    throw "File could not be opened!";
+  }
 }

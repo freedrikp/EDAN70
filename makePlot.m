@@ -22,7 +22,7 @@ figh = figure('Name',file.name);
 set(figh,'visible','off');
 plot(X,Y,'.');
 out = file.name(1:length(file.name)-4);
-saveas(figh,strcat('plots/',out),'jpg');
+saveas(figh,strcat('matlab/',out),'jpg');
 
 end
 
