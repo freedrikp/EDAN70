@@ -15,6 +15,7 @@ public:
 
   void outputDatasetFile(std::string dir);
   static Dataset parseDatasetFile(std::string name);
+  std::vector<std::pair<double,double>> Dataset::lerp(int points);
 private:
   std::string name;
   int nbrPoints;
