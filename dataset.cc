@@ -44,12 +44,11 @@ Dataset Dataset::datasetInterval(double startAngle, double endAngle, double dist
 
   //  std::cout << "StartIndex: " << startIndex << " | "<< "EndIndex: " << endIndex << std::endl;
 
-  int index = 0;
+
   for(int i = startIndex; i<=endIndex;++i){
     Point p = map.find(i)->second;
     if (p.getDistance() <= distance){
-      p.setIndex(index);
-      ++index;
+      p.setIndex(i-startIndex);
       p.shiftAndTransform(-startAngle,0,newFieldOfView);
       set.addPoint(p);
     }
@@ -66,7 +65,7 @@ void Dataset::outputDatasetFile(std::string dir){
     file << nbrPoints << std::endl;
     file << angleInc << std::endl;
     for (auto elem : map){
-      file << elem.first << " " << elem.second.getAccumulatedAngle() << " " << elem.second.getDistance() << std::endl;
+      file << elem.first << " " << elem.second.getAccumulatedAngle() << " " << elem.second.getDistance() << " " << elem.second.getFieldOfView() <<  std::endl;
     }
 
     file.flush();
@@ -85,15 +84,16 @@ Dataset Dataset::parseDatasetFile(std::string name){
     file >> name;
     file >> nbrPoints;
     file >> angleInc;
-    double fieldOfView = (nbrPoints - 1)*angleInc;
     Dataset set(name,nbrPoints,angleInc);
     for (int i = 0; i != nbrPoints; ++i){
       int index;
       double accumulatedAngle;
       double distance;
+      double fieldOfView;
       file >> index;
       file >> accumulatedAngle;
       file >> distance;
+      file >> fieldOfView;
       Point p(index,accumulatedAngle,distance,fieldOfView);
       set.addPoint(p);
     }
@@ -102,36 +102,4 @@ Dataset Dataset::parseDatasetFile(std::string name){
   }else{
     throw "File could not be opened!";
   }
-}
-
-
-void Dataset::lerp(int points){
-
-	std::unorderd_map<int,double> cal;
-	double distance = 0;
-	cal.insert({0,distance});
-    for (int i = 0; i!= map.size()-1; ++i){
-    	distance += map[i].distanceTo(map[i+1]);
-    	cal.insert({i+1,distance});
-    }
-
-    int beg = 0;
-    int end = 1;
-    double distIncrement = distance/points;
-    for(double i = 0; i!= distance;++i){
-    	if(cal[beg]<i && i>cal[end]){
-    		/*make new point in data structure*/
-    	}else if(cal[beg] == i){
-    		/*point is equal to map[beg]*/
-    	}else if(cal[end] == i){
-    		/*point is equal to map[end]*/
-    	}else{
-    		while(end<cal.size()-1 && i>cal[end]){
-    		++beg;
-    		++end;
-    		}
-    	}
-    }
-
-
 }

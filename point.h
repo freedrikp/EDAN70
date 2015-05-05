@@ -19,6 +19,8 @@ public:
   double getDistance();
   double getXCoord();
   double getYCoord();
+  double getFieldOfView();
+  double distanceTo(Point p);
   void shiftAndTransform(double deltaAngle, double deltaDistance, double newFieldOfView);
 private:
   int index;

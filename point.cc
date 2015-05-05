@@ -56,6 +56,10 @@ double Point::getYCoord(){
   return yCoord;
 }
 
+double Point::getFieldOfView(){
+  return fieldOfView;
+}
+
 double Point::distanceTo(Point p){
   return sqrt(pow(p.xCoord-xCoord,2)+pow(p.yCoord- yCoord,2));
 }
