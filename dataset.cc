@@ -44,11 +44,12 @@ Dataset Dataset::datasetInterval(double startAngle, double endAngle, double dist
 
   //  std::cout << "StartIndex: " << startIndex << " | "<< "EndIndex: " << endIndex << std::endl;
 
-
+  int index = 0;
   for(int i = startIndex; i<=endIndex;++i){
     Point p = map.find(i)->second;
     if (p.getDistance() <= distance){
-      p.setIndex(i-startIndex);
+      p.setIndex(index);
+      ++index;
       p.shiftAndTransform(-startAngle,0,newFieldOfView);
       set.addPoint(p);
     }
@@ -106,10 +107,31 @@ Dataset Dataset::parseDatasetFile(std::string name){
 
 void Dataset::lerp(int points){
 
-	std::vector<double> 
-    for (int i = 0; i!= nbrPoints-1; ++i){
-
-      file << elem.second.getXCoord() << " " << elem.second.getYCoord() << std::endl;
+	std::unorderd_map<int,double> cal;
+	double distance = 0;
+	cal.insert({0,distance});
+    for (int i = 0; i!= map.size()-1; ++i){
+    	distance += map[i].distanceTo(map[i+1]);
+    	cal.insert({i+1,distance});
     }
+
+    int beg = 0;
+    int end = 1;
+    double distIncrement = distance/points;
+    for(double i = 0; i!= distance;++i){
+    	if(cal[beg]<i && i>cal[end]){
+    		/*make new point in data structure*/
+    	}else if(cal[beg] == i){
+    		/*point is equal to map[beg]*/
+    	}else if(cal[end] == i){
+    		/*point is equal to map[end]*/
+    	}else{
+    		while(end<cal.size()-1 && i>cal[end]){
+    		++beg;
+    		++end;
+    		}
+    	}
+    }
+
 
 }
