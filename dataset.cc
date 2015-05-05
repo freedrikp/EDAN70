@@ -43,7 +43,6 @@ Dataset Dataset::datasetInterval(double startAngle, double endAngle, double dist
 	double newFieldOfView = endAngle - startAngle;
 
   //  std::cout << "StartIndex: " << startIndex << " | "<< "EndIndex: " << endIndex << std::endl;
-
 	int index = 0;
 	for(int i = startIndex; i<=endIndex;++i){
 		Point p = map.find(i)->second;
@@ -59,52 +58,52 @@ Dataset Dataset::datasetInterval(double startAngle, double endAngle, double dist
 }
 
 void Dataset::outputDatasetFile(std::string dir){
-	std::ofstream file;
-	file.open(dir + "/dataset" + name + ".txt");
+  std::ofstream file;
+  file.open(dir + "/dataset" + name + ".txt");
 
-	if (file.is_open()){
-		file << name << std::endl;
-		file << nbrPoints << std::endl;
-		file << angleInc << std::endl;
-		for (auto elem : map){
-			file << elem.first << " " << elem.second.getAccumulatedAngle() << " " << elem.second.getDistance() << std::endl;
-		}
+  if (file.is_open()){
+    file << name << std::endl;
+    file << nbrPoints << std::endl;
+    file << angleInc << std::endl;
+    for (auto elem : map){
+      file << elem.first << " " << elem.second.getAccumulatedAngle() << " " << elem.second.getDistance() << " " << elem.second.getFieldOfView() <<  std::endl;
+    }
 
-		file.flush();
-		file.close();
-	}else{
-		std::cerr << "Could not open: " << dir << "/plot" << name << ".txt" << std::endl;
-	}
+    file.flush();
+    file.close();
+  }else{
+    std::cerr << "Could not open: " << dir << "/plot" << name << ".txt" << std::endl;
+  }
 }
 
 Dataset Dataset::parseDatasetFile(std::string name){
-	std::ifstream file(name);
-	if (file.is_open()){
-		std::string name;
-		int nbrPoints;
-		double angleInc;
-		file >> name;
-		file >> nbrPoints;
-		file >> angleInc;
-		double fieldOfView = (nbrPoints - 1)*angleInc;
-		Dataset set(name,nbrPoints,angleInc);
-		for (int i = 0; i != nbrPoints; ++i){
-			int index;
-			double accumulatedAngle;
-			double distance;
-			file >> index;
-			file >> accumulatedAngle;
-			file >> distance;
-			Point p(index,accumulatedAngle,distance,fieldOfView);
-			set.addPoint(p);
-		}
-		file.close();
-		return set;
-	}else{
-		throw "File could not be opened!";
-	}
+  std::ifstream file(name);
+  if (file.is_open()){
+    std::string name;
+    int nbrPoints;
+    double angleInc;
+    file >> name;
+    file >> nbrPoints;
+    file >> angleInc;
+    Dataset set(name,nbrPoints,angleInc);
+    for (int i = 0; i != nbrPoints; ++i){
+      int index;
+      double accumulatedAngle;
+      double distance;
+      double fieldOfView;
+      file >> index;
+      file >> accumulatedAngle;
+      file >> distance;
+      file >> fieldOfView;
+      Point p(index,accumulatedAngle,distance,fieldOfView);
+      set.addPoint(p);
+    }
+    file.close();
+    return set;
+  }else{
+    throw "File could not be opened!";
+  }
 }
-
 
 std::vector<std::pair<double,double>> Dataset::lerp(int points){
 
@@ -152,3 +151,4 @@ std::vector<std::pair<double,double>> Dataset::lerp(int points){
 
 
 }
+
