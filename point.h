@@ -1,8 +1,6 @@
 #ifndef POINT_H
 #define POINT_H
 
-#include <cmath>
-#include <utility>
 
 class Point{
 public:

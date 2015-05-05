@@ -2,7 +2,6 @@
 #include <fstream>
 #include <iostream>
 #include <math.h>
-#include <fstream>
 
 Dataset::Dataset(std::string name, int nbrPoints, double angleInc) : name(name), nbrPoints(nbrPoints), angleInc(angleInc) {}
 
