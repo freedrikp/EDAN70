@@ -102,3 +102,14 @@ Dataset Dataset::parseDatasetFile(std::string name){
     throw "File could not be opened!";
   }
 }
+
+
+void Dataset::lerp(int points){
+
+	std::vector<double> 
+    for (int i = 0; i!= nbrPoints-1; ++i){
+
+      file << elem.second.getXCoord() << " " << elem.second.getYCoord() << std::endl;
+    }
+
+}

@@ -1,4 +1,5 @@
 #include "point.h"
+#include <cmath>
 
 
 /*std::pair<double,double>*/ void Point::transform(){
@@ -53,6 +54,10 @@ double Point::getXCoord(){
 
 double Point::getYCoord(){
   return yCoord;
+}
+
+double Point::distanceTo(Point p){
+  return sqrt(pow(p.xCoord-xCoord,2)+pow(p.yCoord- yCoord,2));
 }
 
 void Point::shiftAndTransform(double deltaAngle, double deltaDistance, double newFieldOfView){
