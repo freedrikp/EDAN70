@@ -4,6 +4,8 @@
 #include <unordered_map>
 #include "point.h"
 #include <string>
+#include <vector>
+#include <utility>
 
 class Dataset {
 public:
@@ -15,7 +17,7 @@ public:
 
   void outputDatasetFile(std::string dir);
   static Dataset parseDatasetFile(std::string name);
-  std::vector<std::pair<double,double>> Dataset::lerp(int points);
+  std::vector<std::pair<double,double>> lerp(int points);
 private:
   std::string name;
   int nbrPoints;

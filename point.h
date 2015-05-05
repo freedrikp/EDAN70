@@ -11,6 +11,7 @@ public:
   Point(int index, double accumulatedAngle, double distance, double fieldOfView);
 
   Point(const Point& p) = default;
+  Point() = default;
   // Point& operator=(const Point& p) = delete;
 
   int getIndex();
