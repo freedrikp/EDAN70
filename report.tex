@@ -1,0 +1,48 @@
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{moreverb}
+\usepackage{graphicx}
+\title{Project Report \\ EDAN70 Project in Computer Science \\ Intelligent Systems \\ Classifying Laser Range Data "Images"}
+\date{\today}
+\author{Fredrik Paulsson \\ dat11fp1@student.lu.se \and Shan Senanayake \\ dat11sse@student.lu.se}
+%\setcounter{secnumdepth}{5}
+%\setcounter{tocdepth}{5}
+\begin{document}
+\maketitle
+%\tableofcontents
+
+\section{Introduction}
+In this project we are to develop a classifier that takes as input laser range data and output a classification of the data. The classification may be \emph{door}, \emph{wall} and similar objects.
+
+The goal is to implement this as a ROS node in C++ that can run online on a robot.
+
+The project consists of several parts. The first part is to develop a parser for the laser range data that will put the data in some kind of a data structure as well as transforming the represenation into a form that is easier to work with.
+
+The second part is to develop and implement an algorithm that has the abillity to classify the laser range data. This algorithm is supposed to operate within the data structures that our parser has created.
+
+The third part is to port the classifier into a ROS node and test it in an online environment running on the robot. During development we will use laser range data that has been gathered in the past.
+
+This report will serve as documentation of our project.
+
+\section{Machine Learning}
+We are both very interested in machine learning and has therefore decided to develop our classifier within the machine learning area of artificial intelligence.
+
+The idea that we have is to combine both supervised and unsupervised learning for use in order to classify laser range data. We will start of by manually classifying some data and put it into a database. When the classifier is used it will browse the database and find out which laser range data in the database that matches best with the data to be classified. It will then give the new data the same classification as the data that matched best.
+
+There should be a threshold on how much the best match in the database must match the new data. If this threshold is crossed the classifier will either be unable to give a classification, give an "unknown" classification or simply prompt a warning that this classification may be wrong.
+
+\section{Parser}
+
+\section{Algorithm}
+
+\section{Discussion}
+
+\section{Conclusion}
+
+
+\begin{thebibliography}{1}
+\bibitem{wikipedia}
+http://en.wikipedia.org
+\end{thebibliography}
+\end{document}
