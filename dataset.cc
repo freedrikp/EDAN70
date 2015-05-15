@@ -114,8 +114,8 @@ std::vector<std::pair<double,double>> Dataset::lerp(int points){
     cal.insert({i+1,distance});
   }
 
-  int beg = 0;
-  int end = 1;
+  unsigned beg = 0;
+  unsigned end = 1;
   double distIncrement = distance/points;
   std::vector<std::pair<double,double>> list;
   for(double i = 0; i!= distance; i += distIncrement){
