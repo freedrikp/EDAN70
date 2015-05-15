@@ -18,13 +18,15 @@ LDFLAGS =   -g
 #LDFLAGS +=  -stdlib=libc++
 
 # Targets
-PROGS = parsermain
+PROGS = parsermain linetest
 
 all: $(PROGS)
 
 # Targets rely on implicit rules for compiling and linking
 
 parsermain: parsermain.o point.o dataset.o parser.o
+
+linetest: linetest.o dataset.o point.o
 
 # Phony targets
 .PHONY: all clean

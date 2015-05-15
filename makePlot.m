@@ -21,6 +21,7 @@ Y = A(:,2);
 figh = figure('Name',file.name);
 set(figh,'visible','off');
 plot(X,Y,'.');
+axis equal;
 out = file.name(1:length(file.name)-4);
 saveas(figh,strcat('matlab/',out),'jpg');
 

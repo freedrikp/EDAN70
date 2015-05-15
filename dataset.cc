@@ -104,13 +104,13 @@ Dataset Dataset::parseDatasetFile(std::string name){
   }
 }
 
-std::vector<std::pair<double,double>> determineLines(double threshold){
+std::vector<std::pair<double,double>> Dataset::determineLines(double threshold){
 	std::vector<std::pair<double,double>> lineVector;
-	int start = 0;
+	unsigned start = 0;
 	Point startPoint = map[start];
 	bool done = false;
 	while(!done){
-		index = 1;
+		unsigned index = 1;
 		if(start+index >= map.size()){
 			done = true;
 			break;
@@ -118,6 +118,7 @@ std::vector<std::pair<double,double>> determineLines(double threshold){
 		Point p1 = map[start+index];
 		double startK = startPoint.calcK(p1);
 		bool isLine = true;
+    double errLimit = threshold;
 		while(isLine){
 			++index;
 			if(start+index>=map.size()){
@@ -126,9 +127,10 @@ std::vector<std::pair<double,double>> determineLines(double threshold){
 			}
 			Point p2 = map[start+index];
 			double newK = p1.calcK(p2);
-			double err = pow((startK-newK),2))
-			if(err<threshold){
-				threshold-=err;
+			double err = std::abs((newK-startK)/startK);
+      std::cout << "Error: " << err << "point: " << start+index << std::endl;
+			if(err<errLimit){
+				// errLimit-=err;
 				/*handle line adding*/
 			}else{
 				isLine = false;
