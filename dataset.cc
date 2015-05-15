@@ -127,8 +127,8 @@ std::vector<std::pair<double,double>> Dataset::determineLines(double threshold){
 			}
 			Point p2 = map[start+index];
 			double newK = p1.calcK(p2);
-			double err = std::abs((newK-startK)/startK);
-      std::cout << "Error: " << err << "point: " << start+index << std::endl;
+			double err = (std::atan(std::abs((newK - startK)/(1 + (newK*startK)))))*180/3.141592;
+      std::cout << "Error: " << err << " point: " << start+index << " Angle: " << (std::atan(std::abs((newK - startK)/(1 + (newK*startK)))))*180/3.141592 << std::endl;
 			if(err<errLimit){
 				// errLimit-=err;
 				/*handle line adding*/
