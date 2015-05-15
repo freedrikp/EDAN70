@@ -104,6 +104,48 @@ Dataset Dataset::parseDatasetFile(std::string name){
   }
 }
 
+std::vector<std::pair<double,double>> determineLines(double threshold){
+	std::vector<std::pair<double,double>> lineVector;
+	int start = 0;
+	Point startPoint = map[start];
+	bool done = false;
+	while(!done){
+		index = 1;
+		if(start+index >= map.size()){
+			done = true;
+			break;
+		}
+		Point p1 = map[start+index];
+		double startK = startPoint.calcK(p1);
+		bool isLine = true;
+		while(isLine){
+			++index;
+			if(start+index>=map.size()){
+				done = true;
+				break;
+			}
+			Point p2 = map[start+index];
+			double newK = p1.calcK(p2);
+			double err = pow((startK-newK),2))
+			if(err<threshold){
+				threshold-=err;
+				/*handle line adding*/
+			}else{
+				isLine = false;
+				break;
+			}
+			p1 = p2;
+		}
+		/*add lines to datastructure*/
+		if(index>2){
+			lineVector.push_back(std::make_pair(startPoint.calcK(p1), startPoint.distanceTo(p1)));
+		}
+		start += index-1;
+		startPoint = p1;
+	}
+	return lineVector;
+}
+
 std::vector<std::pair<double,double>> Dataset::lerp(int points){
 
   std::unordered_map<int,double> cal;

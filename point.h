@@ -20,6 +20,7 @@ public:
   double getYCoord();
   double getFieldOfView();
   double distanceTo(Point p);
+  double calcK(Point p);
   void shiftAndTransform(double deltaAngle, double deltaDistance, double newFieldOfView);
 private:
   int index;

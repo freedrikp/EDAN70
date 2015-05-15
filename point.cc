@@ -64,6 +64,10 @@ double Point::distanceTo(Point p){
   return sqrt(pow(p.xCoord-xCoord,2)+pow(p.yCoord- yCoord,2));
 }
 
+double Point::calcK(Point p){
+  return (yCoord-p.yCoord)/(xCoord-p.xCoord);
+}
+
 void Point::shiftAndTransform(double deltaAngle, double deltaDistance, double newFieldOfView){
   accumulatedAngle += deltaAngle;
   distance += deltaDistance;
