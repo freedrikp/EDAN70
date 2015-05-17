@@ -105,6 +105,18 @@ Dataset Dataset::parseDatasetFile(std::string name){
 }
 
 std::vector<std::pair<double,double>> Dataset::determineLines(double threshold){
+	/*Har tweakat denna metoden lite för att få ut bättre resultat. Jag har testat den mot ett 
+	par olika inputs och det verkar som den får rätt bra resultat även på rätt noisy inputfiler.
+
+	Det jag har gjort är att jämföra vinkeln mellan två olika linjer som är bestämmda från startpunkt->första punkten
+	och startpunkt -> andra punkten, vinkeln (låt oss kalla den v) mellan dessa måste vara mindre än threshold. 
+	Dock har jag lagt till att beroende på anvståndet från orginalpunkten så har vi större felmarginal att röra oss på. 
+	Dvs avståndet från start * err(v) < threshold. Och det verkar som detta ger ett väldigt bra resultat.
+	Har inte kollat matten för det men jag tror det kan vara en bra approximering till regression.
+
+	Förutom detta så uppdaterar jag startK varje iteration för att få en bättre approximerig till linjen,
+	detta är helt enkelt medelvärdet för de två dvs: startK =(startK + newK)/2 (detta händer enbart om det är under threshold).
+	*/
 	std::vector<std::pair<double,double>> lineVector;
 	unsigned start = 0;
 	Point startPoint = map[start];
@@ -126,10 +138,13 @@ std::vector<std::pair<double,double>> Dataset::determineLines(double threshold){
 				break;
 			}
 			Point p2 = map[start+index];
-			double newK = p1.calcK(p2);
+			double dist = startPoint.distanceTo(p2)
+			double newK = startPoint.calcK(p2);
+			//double newK = p1.calcK(p2);
 			double err = (std::atan(std::abs((newK - startK)/(1 + (newK*startK)))))*180/3.141592;
-      std::cout << "Error: " << err << " point: " << start+index << " Angle: " << (std::atan(std::abs((newK - startK)/(1 + (newK*startK)))))*180/3.141592 << std::endl;
-			if(err<errLimit){
+      std::cout << "Error: " << err*dist << " point: " << start+index << " Angle: " << (std::atan(std::abs((newK - startK)/(1 + (newK*startK)))))*180/3.141592 << "dist: " << dist << std::endl;
+			if(err*dist<errLimit){
+				startK = (startK +newK)/2;
 				// errLimit-=err;
 				/*handle line adding*/
 			}else{
