@@ -1,3 +1,6 @@
 Attribut:
 Antalet linjer
 Medellängd på linjer
+vinkelsumma? (mellan på följande linjer)
+parallella linjer? (hur många som är parallella på viss felmarginal, #nbr of parallella linjer #medel parallellisering eller potentiellt lista hur många olika paralleliseringar som finns)
+vinkelräta linjer? (hur många vinkelräta mot varandra på viss felmargnal, samma som parallella).
