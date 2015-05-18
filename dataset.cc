@@ -143,9 +143,9 @@ std::vector<Line> Dataset::determineLines(double threshold){
 			double newK = startPoint.calcK(p2);
 			//double newK = p1.calcK(p2);
 			double err = (std::atan(std::abs((newK - startK)/(1 + (newK*startK)))))*180/3.141592;
-      std::cout << "Error: " << err*dist << " point: " << start-index << " Angle: " << (std::atan(std::abs((newK - startK)/(1 + (newK*startK)))))*180/3.141592 << "dist: " << dist << std::endl;
-			if(err*dist<errLimit){
-				startK = (startK +newK)/2;
+      //std::cout << "Error: " << err*dist*10 << " point: " << start-index << " Angle: " << (std::atan(std::abs((newK - startK)/(1 + (newK*startK)))))*180/3.141592 << "dist: " << dist << std::endl;
+			if(err*dist*10<errLimit){
+				//startK = (startK +newK)/2;
 				// errLimit-=err;
 				/*handle line adding*/
 			}else{

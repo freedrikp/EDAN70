@@ -1,0 +1,17 @@
+@relation arff
+@attribute nbrOfLines real
+@attribute avgLength real
+@attribute perpendicular real
+@attribute parallell real
+@attribute isdoor {yes, no}
+@data
+27,0.0685594,8,4,yes
+26,0.0609964,8,8,yes
+24,0.0502484,4,3,yes
+28,0.0671787,10,4,yes
+23,0.0524241,0,4,yes
+26,0.0733429,23,7,yes
+29,0.0738265,6,6,yes
+27,0.0605281,6,5,yes
+25,0.0674833,4,4,yes
+23,0.0748306,6,1,yes
