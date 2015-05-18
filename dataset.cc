@@ -1,7 +1,7 @@
 #include "dataset.h"
 #include <fstream>
 #include <iostream>
-#include <math.h>
+#include <cmath>
 
 Dataset::Dataset(std::string name, int nbrPoints, double angleInc) : name(name), nbrPoints(nbrPoints), angleInc(angleInc) {}
 
@@ -105,12 +105,12 @@ Dataset Dataset::parseDatasetFile(std::string name){
 }
 
 std::vector<std::pair<double,double>> Dataset::determineLines(double threshold){
-	/*Har tweakat denna metoden lite för att få ut bättre resultat. Jag har testat den mot ett 
+	/*Har tweakat denna metoden lite för att få ut bättre resultat. Jag har testat den mot ett
 	par olika inputs och det verkar som den får rätt bra resultat även på rätt noisy inputfiler.
 
 	Det jag har gjort är att jämföra vinkeln mellan två olika linjer som är bestämmda från startpunkt->första punkten
-	och startpunkt -> andra punkten, vinkeln (låt oss kalla den v) mellan dessa måste vara mindre än threshold. 
-	Dock har jag lagt till att beroende på anvståndet från orginalpunkten så har vi större felmarginal att röra oss på. 
+	och startpunkt -> andra punkten, vinkeln (låt oss kalla den v) mellan dessa måste vara mindre än threshold.
+	Dock har jag lagt till att beroende på anvståndet från orginalpunkten så har vi större felmarginal att röra oss på.
 	Dvs avståndet från start * err(v) < threshold. Och det verkar som detta ger ett väldigt bra resultat.
 	Har inte kollat matten för det men jag tror det kan vara en bra approximering till regression.
 
@@ -138,7 +138,7 @@ std::vector<std::pair<double,double>> Dataset::determineLines(double threshold){
 				break;
 			}
 			Point p2 = map[start+index];
-			double dist = startPoint.distanceTo(p2)
+			double dist = startPoint.distanceTo(p2);
 			double newK = startPoint.calcK(p2);
 			//double newK = p1.calcK(p2);
 			double err = (std::atan(std::abs((newK - startK)/(1 + (newK*startK)))))*180/3.141592;
