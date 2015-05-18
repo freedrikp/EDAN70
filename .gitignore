@@ -29,4 +29,13 @@
 
 # Stuff
 *.DS_Store
-plots/plot*
+plots/*
+yes/*
+no/*
+matlab/*
+datasets/*
+octave-workspace
+report.aux
+report.log
+report.pdf
+texput.log
