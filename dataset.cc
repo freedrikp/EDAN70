@@ -119,31 +119,31 @@ std::vector<Line> Dataset::determineLines(double threshold){
 	detta är helt enkelt medelvärdet för de två dvs: startK =(startK + newK)/2 (detta händer enbart om det är under threshold).
 	*/
 	std::vector<Line> lineVector;
-	unsigned start = 0;
+	unsigned start = map.size()-1;
 	Point startPoint = map[start];
 	bool done = false;
 	while(!done){
 		unsigned index = 1;
-		if(start+index >= map.size()){
+		if(start-index <= 0){
 			done = true;
 			break;
 		}
-		Point p1 = map[start+index];
+		Point p1 = map[start-index];
 		double startK = startPoint.calcK(p1);
 		bool isLine = true;
     double errLimit = threshold;
 		while(isLine){
 			++index;
-			if(start+index>=map.size()){
+			if(start-index <= 0){
 				done = true;
 				break;
 			}
-			Point p2 = map[start+index];
+			Point p2 = map[start-index];
 			double dist = startPoint.distanceTo(p2);
 			double newK = startPoint.calcK(p2);
 			//double newK = p1.calcK(p2);
 			double err = (std::atan(std::abs((newK - startK)/(1 + (newK*startK)))))*180/3.141592;
-      std::cout << "Error: " << err*dist << " point: " << start+index << " Angle: " << (std::atan(std::abs((newK - startK)/(1 + (newK*startK)))))*180/3.141592 << "dist: " << dist << std::endl;
+      std::cout << "Error: " << err*dist << " point: " << start-index << " Angle: " << (std::atan(std::abs((newK - startK)/(1 + (newK*startK)))))*180/3.141592 << "dist: " << dist << std::endl;
 			if(err*dist<errLimit){
 				startK = (startK +newK)/2;
 				// errLimit-=err;
@@ -161,7 +161,7 @@ std::vector<Line> Dataset::determineLines(double threshold){
 			Line l(startK,m,length);
 			lineVector.push_back(l);
 		}
-		start += index-1;
+		start -= index-1;
 		startPoint = p1;
 	}
 	return lineVector;
