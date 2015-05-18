@@ -1,4 +1,5 @@
 #include "dataset.h"
+#include "line.h"
 #include <fstream>
 #include <iostream>
 #include <cmath>
@@ -104,7 +105,7 @@ Dataset Dataset::parseDatasetFile(std::string name){
   }
 }
 
-std::vector<std::pair<double,double>> Dataset::determineLines(double threshold){
+std::vector<Line> Dataset::determineLines(double threshold){
 	/*Har tweakat denna metoden lite för att få ut bättre resultat. Jag har testat den mot ett
 	par olika inputs och det verkar som den får rätt bra resultat även på rätt noisy inputfiler.
 
@@ -117,7 +118,7 @@ std::vector<std::pair<double,double>> Dataset::determineLines(double threshold){
 	Förutom detta så uppdaterar jag startK varje iteration för att få en bättre approximerig till linjen,
 	detta är helt enkelt medelvärdet för de två dvs: startK =(startK + newK)/2 (detta händer enbart om det är under threshold).
 	*/
-	std::vector<std::pair<double,double>> lineVector;
+	std::vector<Line> lineVector;
 	unsigned start = 0;
 	Point startPoint = map[start];
 	bool done = false;
@@ -155,7 +156,10 @@ std::vector<std::pair<double,double>> Dataset::determineLines(double threshold){
 		}
 		/*add lines to datastructure*/
 		if(index>2){
-			lineVector.push_back(std::make_pair(startPoint.calcK(p1), startPoint.distanceTo(p1)));
+			double m = startPoint.getYCoord() - startPoint.getXCoord() * startK;
+			double length = startPoint.distanceTo(p1);
+			Line l(startK,m,length);
+			lineVector.push_back(l);
 		}
 		start += index-1;
 		startPoint = p1;
