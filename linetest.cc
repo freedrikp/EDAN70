@@ -36,11 +36,11 @@ int main(int argc, char* argv[]){
     		//calculate angle between lines
     		double angle = (std::atan(std::abs((elem.first - elem1.first)/(1 + (elem.first*elem1.first)))))*180/3.141592;
     		//if angle = 0 + error margin, and the line has not already been checked.
-    		if(angle<(std::stod(argv[3])) && already_checked_parallel.find(elem) != already_checked_parallel.end()){
+    		if(angle<(std::stod(argv[3])) && already_checked_parallel.find(elem) == already_checked_parallel.end()){
     			++nbr_parallell;
     			already_checked_parallel.insert(elem1);
     		//if the angle is perpendicualr + error margin and the line has not already been checked.
-    		}else if(angle>(90-std::stod(argv[4]))&& already_checked_parallel.find(elem) != already_checked_parallel.end()){
+      }else if(angle>(90-std::stod(argv[4]))&& already_checked_parallel.find(elem) == already_checked_parallel.end()){
     			++nbr_perpend;
     			already_checked_perpend.insert(elem1);
     		}
