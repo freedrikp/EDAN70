@@ -3,6 +3,13 @@
 #include <fstream>
 #include <iostream>
 #include <cmath>
+#include <unordered_set>
+
+struct Hash {
+  size_t operator()(const Line& line) const {
+    return std::hash<double>()(line.getK() * 31 + line.getM() * 17 + line.getLength());
+  }
+};
 
 Dataset::Dataset(std::string name, int nbrPoints, double angleInc) : name(name), nbrPoints(nbrPoints), angleInc(angleInc) {}
 
@@ -153,10 +160,11 @@ std::vector<Line> Dataset::determineLines(double threshold){
 			//double err = (std::atan(std::abs((newK - startK)/(1 + (newK*startK)))))*180/3.141592;
       //std::cout << "Error: " << err*dist*10 << " point: " << start-index << " Angle: " << (std::atan(std::abs((newK - startK)/(1 + (newK*startK)))))*180/3.141592 << "dist: " << dist << std::endl;
 			//std::cout << "lower: " << lower << " ycoord: " << p2.getYCoord() << " upper: " << upper << std::endl;
+				//std::cout << "start: " << start << " next point: " << start-index << " startK: " << startK << " newK: " << newK /*<< " newStartK: " << val*/ << std::endl;
 			if(lower<=p2.getYCoord() && p2.getYCoord()<=upper){
 				double w = 1.0/index;
 				double val = (1-w)*startK + w*newK;
-				//std::cout << "start: " << start << " next point: " << start-index << " startK: " << startK << " newK: " << newK << " newStartK: " << val << std::endl;
+				startK = val;
 				// errLimit-=err;
 				/*handle line adding*/
 			}else{
@@ -171,11 +179,67 @@ std::vector<Line> Dataset::determineLines(double threshold){
 			double m = startPoint.getYCoord() - startPoint.getXCoord() * startK;
 			Line l(startK,m,length);
 			lineVector.push_back(l);
+			//std::cout << "----------------added line----------" << std::endl;
 		}
 		start -= index-1;
 		startPoint = p1;
 	}
 	return lineVector;
+}
+
+Attributes Dataset::lineAttributes(double err1, double err2, double err3){
+  std::vector<Line> vec = determineLines(err1);
+  std::cout << "Attributes: " << std::endl;
+  std::cout << "Number of lines: " << vec.size() << std::endl;
+  double length = 0;
+  int nbr_parallell = 0;
+  int nbr_perpend = 0;
+
+
+
+  std::unordered_set<Line, Hash> already_checked_parallel;
+  std::unordered_set<Line, Hash> already_checked_perpend;
+
+
+  for (auto elem : vec){
+    std::cout << "K-value: " << elem.getK() << " M-value: " << elem.getM() << " Length: "<< elem.getLength() << std::endl;
+    length += elem.getLength();
+		bool firstPara = true;
+		bool firstPerpend = true;
+    for(auto elem1 : vec){
+      //check if it is not current element
+      if(elem != elem1){
+        //calculate angle between lines
+        double angle = (std::atan(std::abs((elem.getK() - elem1.getK())/(1 + (elem.getK()*elem1.getK())))))*180/3.141592;
+        //if angle = 0 + error margin, and the line has not already been checked.
+        if(angle<err2 && already_checked_parallel.find(elem) == already_checked_parallel.end()){
+          ++nbr_parallell;
+          already_checked_parallel.insert(elem1);
+			if(firstPara){
+				++nbr_parallell;
+				firstPara = false;
+			}
+          //if the angle is perpendicualr + error margin and the line has not already been checked.
+        }else if(angle>(90-err3) && already_checked_perpend.find(elem) == already_checked_perpend.end()){
+          ++nbr_perpend;
+          already_checked_perpend.insert(elem1);
+			if(firstPerpend){
+				++nbr_perpend;
+				firstPerpend = false;
+			}
+        }
+		std::cout << "Angle " << angle << " para: " << nbr_parallell << " perpend: " << nbr_perpend << std::endl;
+      }
+    }
+  }
+  std::cout << "Mean length of lines: " << (length/vec.size()) << std::endl;
+
+  std::cout << "Parallell lines: " << nbr_parallell << std::endl;
+
+  std::cout << "Perpendicular lines: " << nbr_perpend << std::endl;
+
+	Attributes attributes(vec.size(),length/vec.size(),nbr_parallell,nbr_perpend);
+	return attributes;
 }
 
 std::vector<std::pair<double,double>> Dataset::lerp(int points){

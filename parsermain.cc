@@ -48,6 +48,7 @@ Mvh, Elin
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <cmath>
 #include "parser.h"
 #include "dataset.h"
 

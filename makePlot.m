@@ -22,9 +22,11 @@ figh = figure('Name',file.name);
 set(figh,'visible','off');
 plot(X,Y,'.');
 axis equal;
+%axis([-inf inf 0 inf]);
 out = file.name(1:length(file.name)-4);
-saveas(figh,strcat('matlab/',out),'jpg');
+%saveas(figh,strcat('matlab/',out),'jpg');
+print(figh,strcat('matlab/',out),'-djpg');
 
 end
 
-printf("Done!\n");
+%printf("Done!\n");

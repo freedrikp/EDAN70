@@ -2,6 +2,7 @@
 #define DATASET_H
 
 #include <unordered_map>
+#include "attributes.h"
 #include "point.h"
 #include "line.h"
 #include <string>
@@ -19,6 +20,7 @@ public:
   void outputDatasetFile(std::string dir);
   static Dataset parseDatasetFile(std::string name);
   std::vector<Line> determineLines(double threshold);
+  Attributes lineAttributes(double err1, double err2, double err3);
   std::vector<std::pair<double,double>> lerp(int points);
 private:
   std::string name;
