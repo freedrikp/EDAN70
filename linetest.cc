@@ -11,11 +11,11 @@
 
 
 
-void doLineTest(std::ofstream& file, char* argv[], std::string name){
+void doLineTest(std::ofstream& file, char* argv[], std::string name, std::string classification){
   Dataset set = Dataset::parseDatasetFile(name);
-  Attributes attributes = set.lineAttributes(std::stod(argv[2]),std::stod(argv[3]),std::stod(argv[4]));
+  Attributes attributes = set.lineAttributes(std::stod(argv[1]),std::stod(argv[2]),std::stod(argv[3]));
 
-  file << attributes.getNbrLines() << "," << attributes.getMeanLength() << "," << attributes.getPerpendicular() << "," << attributes.getParallell() << "," << argv[1] << std::endl;
+  file << attributes.getNbrLines() << "," << attributes.getMeanLength() << "," << attributes.getPerpendicular() << "," << attributes.getParallell() << "," << classification << std::endl;
 }
 
 int main(int argc, char* argv[]){
@@ -32,14 +32,29 @@ int main(int argc, char* argv[]){
 
   DIR *dir;
   struct dirent *ent;
-  if ((dir = opendir (argv[1])) != NULL) {
+  if ((dir = opendir ("yes")) != NULL) {
     /* print all the files and directories within directory */
     while ((ent = readdir (dir)) != NULL) {
       if (ent->d_name[0] == '.'){
         continue;
       }
       std::cout << ent->d_name << std::endl;
-      doLineTest(file, argv,std::string(argv[1]) + "/" + ent->d_name);
+      doLineTest(file, argv,std::string("yes") + "/" + ent->d_name,"yes");
+    }
+  } else {
+    /* could not open directory */
+    perror ("");
+    return EXIT_FAILURE;
+  }
+  closedir (dir);
+  if ((dir = opendir ("no")) != NULL) {
+    /* print all the files and directories within directory */
+    while ((ent = readdir (dir)) != NULL) {
+      if (ent->d_name[0] == '.'){
+        continue;
+      }
+      std::cout << ent->d_name << std::endl;
+      doLineTest(file, argv,std::string("no") + "/" + ent->d_name,"no");
 
 
     }
@@ -49,12 +64,5 @@ int main(int argc, char* argv[]){
     perror ("");
     return EXIT_FAILURE;
   }
-
-
-
-
-
-
-
 
 }
