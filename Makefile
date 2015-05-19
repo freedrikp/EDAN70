@@ -18,7 +18,7 @@ LDFLAGS =   -g
 #LDFLAGS +=  -stdlib=libc++
 
 # Targets
-PROGS = parsermain linetest
+PROGS = parsermain linetest classifier
 
 all: $(PROGS)
 
@@ -27,6 +27,8 @@ all: $(PROGS)
 parsermain: parsermain.o point.o dataset.o parser.o line.o attributes.o
 
 linetest: linetest.o dataset.o point.o line.o attributes.o
+
+classifier: classifier.o dataset.o point.o line.o attributes.o
 
 # Phony targets
 .PHONY: all clean
