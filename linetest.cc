@@ -34,6 +34,8 @@ void doLineTest(std::ofstream& file, char* argv[], std::string name){
   for (auto elem : vec){
     std::cout << "K-value: " << elem.getK() << " M-value: " << elem.getM() << " Length: "<< elem.getLength() << std::endl;
     length += elem.getLength();
+		bool firstPara = true;
+		bool firstPerpend = true;
     for(auto elem1 : vec){
       //check if it is not current element
       if(elem != elem1){
@@ -43,11 +45,20 @@ void doLineTest(std::ofstream& file, char* argv[], std::string name){
         if(angle<(std::stod(argv[3])) && already_checked_parallel.find(elem) == already_checked_parallel.end()){
           ++nbr_parallell;
           already_checked_parallel.insert(elem1);
+			if(firstPara){
+				++nbr_parallell;
+				firstPara = false;
+			}
           //if the angle is perpendicualr + error margin and the line has not already been checked.
         }else if(angle>(90-std::stod(argv[4]))&& already_checked_parallel.find(elem) == already_checked_parallel.end()){
           ++nbr_perpend;
           already_checked_perpend.insert(elem1);
+			if(firstPerpend){
+				++nbr_perpend;
+				firstPerpend = false;
+			}
         }
+		//std::cout << "Angle " << angle << " para: " << nbr_parallell << " perpend: " << nbr_perpend << std::endl;
       }
     }
   }

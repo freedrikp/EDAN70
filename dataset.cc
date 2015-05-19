@@ -139,13 +139,24 @@ std::vector<Line> Dataset::determineLines(double threshold){
 				break;
 			}
 			Point p2 = map[start-index];
+			double m = startPoint.getYCoord() - startK*startPoint.getXCoord();
+			double upper = startK * p2.getXCoord() + m + errLimit;
+			double lower = startK * p2.getXCoord() + m - errLimit;
+			if(lower>upper){
+				double temp = upper;
+				upper = lower;
+				lower = temp;
+			}
 			double dist = startPoint.distanceTo(p2);
 			double newK = startPoint.calcK(p2);
 			//double newK = p1.calcK(p2);
-			double err = (std::atan(std::abs((newK - startK)/(1 + (newK*startK)))))*180/3.141592;
+			//double err = (std::atan(std::abs((newK - startK)/(1 + (newK*startK)))))*180/3.141592;
       //std::cout << "Error: " << err*dist*10 << " point: " << start-index << " Angle: " << (std::atan(std::abs((newK - startK)/(1 + (newK*startK)))))*180/3.141592 << "dist: " << dist << std::endl;
-			if(err*dist*10<errLimit){
-				//startK = (startK +newK)/2;
+			//std::cout << "lower: " << lower << " ycoord: " << p2.getYCoord() << " upper: " << upper << std::endl;
+			if(lower<=p2.getYCoord() && p2.getYCoord()<=upper){
+				double w = 1.0/index;
+				double val = (1-w)*startK + w*newK;
+				//std::cout << "start: " << start << " next point: " << start-index << " startK: " << startK << " newK: " << newK << " newStartK: " << val << std::endl;
 				// errLimit-=err;
 				/*handle line adding*/
 			}else{
@@ -155,9 +166,9 @@ std::vector<Line> Dataset::determineLines(double threshold){
 			p1 = p2;
 		}
 		/*add lines to datastructure*/
-		if(index>2){
+		double length = startPoint.distanceTo(p1);
+		if(length>0.2 && index>3){
 			double m = startPoint.getYCoord() - startPoint.getXCoord() * startK;
-			double length = startPoint.distanceTo(p1);
 			Line l(startK,m,length);
 			lineVector.push_back(l);
 		}
