@@ -1,18 +1,49 @@
-\documentclass[a4paper]{article}
-\usepackage[utf8]{inputenc}
-\usepackage[english]{babel}
-\usepackage{moreverb}
-\usepackage{graphicx}
-\title{Project Report \\ EDAN70 Project in Computer Science \\ Intelligent Systems \\ Classifying Laser Range Data "Images"}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%2345678901234567890123456789012345678901234567890123456789012345678901234567890
+%        1         2         3         4         5         6         7         8
+
+\documentclass[letterpaper, 10 pt, conference]{ieeeconf}  % Comment this line out if you need a4paper
+
+%\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4 paper
+
+\IEEEoverridecommandlockouts                              % This command is only needed if
+                                                          % you want to use the \thanks command
+
+\overrideIEEEmargins                                      % Needed to meet printer requirements.
+
+% See the \addtolength command later in the file to balance the column lengths
+% on the last page of the document
+
+% The following packages can be found on http:\\www.ctan.org
+%\usepackage{graphics} % for pdf, bitmapped graphics files
+%\usepackage{epsfig} % for postscript graphics files
+%\usepackage{mathptmx} % assumes new font selection scheme installed
+%\usepackage{times} % assumes new font selection scheme installed
+%\usepackage{amsmath} % assumes amsmath package installed
+%\usepackage{amssymb}  % assumes amsmath package installed
+
+\title{\LARGE \bf Project Report \\ EDAN70 Project in Computer Science \\ Intelligent Systems \\ Classifying Laser Range Data "Images"}
 \date{\today}
 \author{Fredrik Paulsson \\ dat11fp1@student.lu.se \and Shan Senanayake \\ dat11sse@student.lu.se}
-%\setcounter{secnumdepth}{5}
-%\setcounter{tocdepth}{5}
+
+
 \begin{document}
 \maketitle
-%\tableofcontents
+\thispagestyle{empty}
+\pagestyle{empty}
 
-\section{Introduction}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{abstract}
+
+%This electronic document is a �live� template. The various components of your paper [title, text, heads, etc.] are already defined on the style sheet, as illustrated by the portions given in this document.
+
+%\end{abstract}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{INTRODUCTION}
+
 In this project we are to develop a classifier that takes as input laser range data and output a classification of the data. The classification may be \emph{door}, \emph{wall} and similar objects.
 
 The goal is to implement this as a ROS node in C++ that can run online on a robot.
@@ -32,17 +63,49 @@ The idea that we have is to combine both supervised and unsupervised learning fo
 
 There should be a threshold on how much the best match in the database must match the new data. If this threshold is crossed the classifier will either be unable to give a classification, give an "unknown" classification or simply prompt a warning that this classification may be wrong.
 
-\section{Parser}
+\section{PARSER}
 
-\section{Algorithm}
+\section{ALGORITHM}
 
-\section{Discussion}
+\section{DISCUSSION}
 
-\section{Conclusion}
+\section{CONCLUSION}
 
 
-\begin{thebibliography}{1}
-\bibitem{wikipedia}
-http://en.wikipedia.org
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section*{APPENDIX}
+
+%Appendixes should appear before the acknowledgment.
+
+%\section*{ACKNOWLEDGMENT}
+
+%The preferred spelling of the word �acknowledgment� in America is without an �e� after the �g�. Avoid the stilted expression, �One of us (R. B. G.) thanks . . .�  Instead, try �R. B. G. thanks�. Put sponsor acknowledgments in the unnumbered footnote on the first page.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%References are important to the reader; therefore, each citation must be complete and correct. If at all possible, references should be commonly available publications.
+
+
+
+\begin{thebibliography}{}
+
+\bibitem{bla}blabla
+
 \end{thebibliography}
+
+
+
+
 \end{document}
