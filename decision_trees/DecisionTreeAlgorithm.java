@@ -38,7 +38,7 @@ public class DecisionTreeAlgorithm {
 			if (hasOnlyTerminalLeaves(hypothesis.getValueOfBranches())) {
 				double deviation = deviation(hypothesis);
 				int size = hypothesis.getBranches().size();
-				if(size>1){
+				if (size > 1) {
 					size--;
 				}
 				double probability = ChiSquareDist.cdf(size, 4, deviation);
@@ -74,7 +74,7 @@ public class DecisionTreeAlgorithm {
 		int totPos = countExamples(attr, examples, positives, negatives);
 		double calc = calcDeviation(attr, positives, negatives, totPos,
 				examples.size());
-		if(node.getAttribute().toString().equals("'insu'")){
+		if (node.getAttribute().toString().equals("'insu'")) {
 		}
 		return calc;
 	}
@@ -91,7 +91,7 @@ public class DecisionTreeAlgorithm {
 					examplesSize);
 			double estimateN = estimatedValue(positive, negative, examplesSize
 					- totPos, examplesSize);
-			if(estimateP > 0 || estimateN >0){
+			if (estimateP > 0 || estimateN > 0) {
 				deviationSum += Math.pow(positive - estimateP, 2) / estimateP
 						+ Math.pow(negative - estimateN, 2) / estimateN;
 			}
@@ -181,7 +181,7 @@ public class DecisionTreeAlgorithm {
 		return new TerminalNode(g);
 	}
 
-	private double calculateGain(Attribute attr, ArrayList<Example> examples) {
+	public double calculateGain(Attribute attr, ArrayList<Example> examples) {
 		HashMap<String, Integer> positives = new HashMap<String, Integer>();
 		HashMap<String, Integer> negatives = new HashMap<String, Integer>();
 		int totPos = countExamples(attr, examples, positives, negatives);
