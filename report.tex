@@ -1,11 +1,12 @@
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %2345678901234567890123456789012345678901234567890123456789012345678901234567890
 %        1         2         3         4         5         6         7         8
 
-\documentclass[letterpaper, 10 pt, conference]{ieeeconf}  % Comment this line out if you need a4paper
+%\documentclass[letterpaper, 10 pt, conference]{ieeeconf}  % Comment this line out if you need a4paper
 
-%\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4 paper
-
+\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4 paper
+\usepackage[T1]{fontenc}
 \IEEEoverridecommandlockouts                              % This command is only needed if
                                                           % you want to use the \thanks command
 
@@ -19,10 +20,10 @@
 %\usepackage{epsfig} % for postscript graphics files
 %\usepackage{mathptmx} % assumes new font selection scheme installed
 %\usepackage{times} % assumes new font selection scheme installed
-%\usepackage{amsmath} % assumes amsmath package installed
+\usepackage{amsmath} % assumes amsmath package installed
 %\usepackage{amssymb}  % assumes amsmath package installed
 
-\title{\LARGE \bf Project Report \\ EDAN70 Project in Computer Science \\ Intelligent Systems \\ Classifying Laser Range Data "Images"}
+\title{\LARGE \bf Project Report \\ EDAN70 Project in Computer Science \\ Intelligent Systems \\ Classifying Laser Range Data "Images" \\ Supervisor: Elin Anna Topp}
 \date{\today}
 \author{Fredrik Paulsson \\ dat11fp1@student.lu.se \and Shan Senanayake \\ dat11sse@student.lu.se}
 
@@ -64,8 +65,24 @@ The idea that we have is to combine both supervised and unsupervised learning fo
 There should be a threshold on how much the best match in the database must match the new data. If this threshold is crossed the classifier will either be unable to give a classification, give an "unknown" classification or simply prompt a warning that this classification may be wrong.
 
 \section{PARSER}
+The offline data of measurements that we have used to test our classifier and based the supervised learning part on was given to us in a specific format. All measurements gathered in one run of the robot's laser range scanner is put into one single file called \emph{scans.dat}. Each single measurement is placed on its own line. Measurements were gathered with a frequency of 4-5 Hz according to our supervisor.
+
+Each of these measurements had a specific format and each measurements starts with a header of 15 values and then a value for each point in the measurement. The laser range scanner works by emitting a certain number of laser beams which will be reflected in obejcts in the field of view of the scanner. The scanner will then calculate the distance to each reflection point resulting in a number of distances. In each measurements the number of points and the angle between the points are given. Effectively each point's coordinates is given in polar form.
+
+Each measurement looks like the following:
+
+
+<unknown> <unknown> <number\_of\_points> <timestamp\_seconds> <timestamp\_microseconds> <unknown> <unknown> <unknown> <unknown> <unknown> <unknown> <angle\_between\_points> <unknown> <unknown> <unknown> <distance\_in\_meters>$^{\text{<number\_of\_points>}}$
+
+As can be seen there are a lot of unknown values that we do not know and that our supervisor could not explain to us. However, these values are not needed by us in this project. The most important values are the number of points, the angle between the points and for each point the distance to the point.
 
 \section{ALGORITHM}
+
+\subsection{Interpolation and Comparison}
+
+\subsection{Decision Tree}
+
+\section{RESULTS}
 
 \section{DISCUSSION}
 
