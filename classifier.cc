@@ -5,14 +5,8 @@
 #include <sstream>
 #include <iostream>
 
-
-int main(int argc, char* argv[])
-{
-  Dataset set = Dataset::parseDatasetFile(argv[2]);
-  Attributes attributes = set.lineAttributes(std::stod(argv[3]), std::stod(argv[4]), std::stod(argv[5]));
-  
-  
-  std::ifstream file(argv[1]);
+void classify(std::string treeFile, Attributes attributes){
+	std::ifstream file(treeFile);
 	std::string line;
 	std::string next = "";
 	while (std::getline(file,line)){
@@ -51,6 +45,16 @@ int main(int argc, char* argv[])
 		}
 			
 	}
-	return 0;
+}
+
+int main(int argc, char* argv[]){
+  if (argc != 6){
+	std::cout << "Usage: Tree-file Dataset-file Line-tolerance Parallel-tolerance Perpendicular-tolerance" << std::endl;
+	  exit(1);
+  }
+  Dataset set = Dataset::parseDatasetFile(argv[2]);
+  Attributes attributes = set.lineAttributes(std::stod(argv[3]), std::stod(argv[4]), std::stod(argv[5]));
+  classify(argv[1], attributes);
+  return 0;
 	
 }
