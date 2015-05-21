@@ -6,7 +6,7 @@ Attributes::Attributes(double nbr_lines, double mean_length, int parallell, int 
 double Attributes::getValueOfAttr(std::string attr)
 {
 	
-	if(attr ==  Attributes::NBR_LINES){
+	if(attr == Attributes::NBR_LINES){
 		return nbr_lines;
 	}else if(attr == Attributes::MEAN_LENGTH){
 		return mean_length;

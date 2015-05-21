@@ -28,6 +28,7 @@ void classify(std::string treeFile, Attributes attributes){
 				next = firstWord;
 				continue;
 			}
+			stream >> ch;
 		}else if(ch == '>'){
 			stream >> value;
 			double attrValue = attributes.getValueOfAttr(firstWord);
@@ -40,11 +41,14 @@ void classify(std::string treeFile, Attributes attributes){
 		if(stream.good() && ch == ':'){
 			std::string output;
 			stream >> output;
-			std::cout << output << std::endl;
+			std::cout << "result: " << output << std::endl;
 			break;
+		}else{
+			next = "";
 		}
 			
 	}
+	std::cout << "loop done" << std::endl;
 }
 
 int main(int argc, char* argv[]){
