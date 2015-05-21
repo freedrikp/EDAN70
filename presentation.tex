@@ -103,7 +103,7 @@ INSERT 4 PLOTS ON THIS FRAME
 
 \begin{frame}
 \frametitle{Algorithm}
-\framesubtitle{Angle of Attack}
+\framesubtitle{Approach}
 
 We are both very interested in the Machine Learning division of Artificial Intelligence.
 
@@ -123,9 +123,41 @@ However, we eventually realized that we needed to use supervised learning in ord
 
 Eventually we had to only use supervised learning as we had to change the way the whole classifier was going to work.
 
+\end{frame}
 
+\begin{frame}[shrink]
+\frametitle{Algorithm}
+\framesubtitle{Directly Comparing Measurements}
 
+The first approach that we tried to implement was the following:
 
+\begin{itemize}
+\pause
+\item{Maintaining a list of measurements and their classifications}
+\pause
+\item{Have some kind of algorithm that directly compares two measurements}
+\pause
+\item{Using the above algorithm to find the best match in the maintained list}
+\pause
+\item{Assign the same classification of the best match to the new measurement}
+\pause
+\item{Add our newly classified measurement to the list}
+\end{itemize}
+
+\pause
+This approach combines supervised and unsupervised learning. We must have a starting list, this is supervised learning, and as the list grows we have unsupervised learning.
+
+\pause
+\vspace{10pt}
+
+However, This approach has some problems.
+
+\begin{itemize}
+\pause
+\item{Difficult to find an algortihm to comapre measurements}
+\pause
+\item{Since the list grows, the classifier can introduce small errors that will accumulate}
+\end{itemize}
 
 \end{frame}
 
