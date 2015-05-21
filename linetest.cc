@@ -19,8 +19,8 @@ void doLineTest(std::ofstream& file, char* argv[], std::string name, std::string
 }
 
 int main(int argc, char* argv[]){
-
-  std::ofstream file("arff.arff");
+  std::string fileName = std::string("arff-") + argv[1] + "m-" + argv[2] + "-" + argv[3] + ".arff";
+  std::ofstream file(fileName);
 
   file << "@relation arff" << std::endl;
   file << "@attribute " << Attributes::NBR_LINES << " real" << std::endl;
