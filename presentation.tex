@@ -1,7 +1,9 @@
 \documentclass{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
+\usepackage{listings}
 \usepackage{moreverb}
+\usepackage{hyperref}
 \usepackage{graphicx}
 \usetheme{Madrid}
 \title[Classifying Laser Range Data "Images"] % (optional, only for long titles)
@@ -192,52 +194,75 @@ The next approach was to go up a abstraction level and try to locate intresting 
 Which led us to the line finding algorithm.
 \pause
 
-$y = kx + m$
-$y_{upper} = kx + m + err$
-$y_{lower} = kx + m - err$
+\begin{equation} \label{eq1}
+\begin{split}
+y & = kx + m \\
+y_{upper}  & =  kx + m + err \\
+y_{lower} & = kx + m - err \\
+\end{split}
+\end{equation}
 \begin{enumerate}
 \pause
-\item{Find the first line between startpoint and the next point}
-\pause
-\item{Check if the next point is in bounds of $y_{upper}$ and $y_{lower}$}
-\pause
-\item{If 2 Adjust the original line with weight to the new point}
-\pause
-\item{When done check if line length > 0.2 m and has at least 3 points}
-\pause
-\item{Repeat 1 until no more points can be checked}
+\item{\label{itm:first}Find the first line between startpoint and the next point}
+\item{\label{itm:snd}Check if the next point is in bounds of $y_{upper}$ and $y_{lower}$}
+\item{If \ref{itm:snd} Adjust the original line with weight to the new point}
+\item{When done check if line length $>$ 0.2 m and has at least 3 points}
+\item{Repeat \ref{itm:first} until no more points can be checked}
 \end{enumerate}
 
-This seemed like quite a good algorith to find characteristics in the dataset.
 
 \end{frame}
 
 \begin{frame}
 \frametitle{Algorithm}
 \framesubtitle{Line Finding}
-
-The next approach was to go up a abstraction level and try to locate intresting characteristics of the data set.
-Which led us to the line finding algorithm.
-\pause
-
-$y = kx + m$
-$y_{upper} = kx + m + err$
-$y_{lower} = kx + m - err$
-\begin{enumerate}
-\pause
-\item{Find the first line between startpoint and the next point}
-\pause
-\item{Check if the next point is in bounds of $y_{upper}$ and $y_{lower}$}
-\pause
-\item{If 2 Adjust the original line with weight to the new point}
-\pause
-\item{When done check if line length > 0.2 m and has at least 3 points}
-\pause
-\item{Repeat 1 until no more points can be checked}
-\end{enumerate}
+Ran linefinding with 0.2 m thick line, and 10 degrees of margin of error for finding perpendicular and parallell lines.
+\includegraphics[scale=0.3]{presimg/human.jpg}
+\begin{itemize}
+\item{Number of lines: 5}
+\item{Mean length of lines: 0.892474 m}
+\item{Parallell: 4}
+\item{Perpendicular: 3}
+\end{itemize}
 
 
 \end{frame}
+
+\begin{frame}
+\frametitle{Algorithm}
+\framesubtitle{The Decision Tree}
+
+Now that we had a way to represent data we could chose a machine learning algorithm to learn patterns.
+
+\pause
+
+The algorithm we chose was the ID3 (Decision tree algorithm) which was a perfect algorithm to represent this abstract data structure.
+
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Algorithm}
+\framesubtitle{The Decision Tree}
+
+Now that we had a way to represent data we could chose a machine learning algorithm to learn patterns.
+
+\pause
+\vspace{10pt}
+
+The algorithm we chose was the ID3 (Decision tree algorithm) which was a perfect algorithm to represent this abstract data structure.
+
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Algorithm}
+\framesubtitle{The Decision Tree}
+\includegraphics[scale=0.3]{presimg/id3.jpg}
+
+\end{frame}
+
 
 
 \end{document}
