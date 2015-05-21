@@ -5,8 +5,8 @@
 
 class Attributes {
 public:
-  static constexpr const char* NBR_LINES = "nbrOfLines";
-	static constexpr const char* MEAN_LENGTH = "avgLength";
+  static constexpr const char* NBR_LINES = "nbroflines";
+	static constexpr const char* MEAN_LENGTH = "avglength";
 	static constexpr const char* PARALLELL = "parallell";
 	static constexpr const char* PERPENDICULAR = "perpendicular";
 
