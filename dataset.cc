@@ -190,8 +190,8 @@ std::vector<Line> Dataset::determineLines(double threshold){
 
 Attributes Dataset::lineAttributes(double err1, double err2, double err3){
   std::vector<Line> vec = determineLines(err1);
-  std::cout << "Attributes: " << std::endl;
-  std::cout << "Number of lines: " << vec.size() << std::endl;
+  //std::cout << "Attributes: " << std::endl;
+  //std::cout << "Number of lines: " << vec.size() << std::endl;
   double length = 0;
   int nbr_parallell = 0;
   int nbr_perpend = 0;
@@ -203,7 +203,7 @@ Attributes Dataset::lineAttributes(double err1, double err2, double err3){
 
 
   for (auto elem : vec){
-    std::cout << "K-value: " << elem.getK() << " M-value: " << elem.getM() << " Length: "<< elem.getLength() << std::endl;
+    //std::cout << "K-value: " << elem.getK() << " M-value: " << elem.getM() << " Length: "<< elem.getLength() << std::endl;
     length += elem.getLength();
 		bool firstPara = true;
 		bool firstPerpend = true;
@@ -229,15 +229,15 @@ Attributes Dataset::lineAttributes(double err1, double err2, double err3){
 				firstPerpend = false;
 			}
         }
-		std::cout << "Angle " << angle << " para: " << nbr_parallell << " perpend: " << nbr_perpend << std::endl;
+		//std::cout << "Angle " << angle << " para: " << nbr_parallell << " perpend: " << nbr_perpend << std::endl;
       }
     }
   }
-  std::cout << "Mean length of lines: " << (length/vec.size()) << std::endl;
+  //std::cout << "Mean length of lines: " << (length/vec.size()) << std::endl;
 
-  std::cout << "Parallell lines: " << nbr_parallell << std::endl;
+  //std::cout << "Parallell lines: " << nbr_parallell << std::endl;
 
-  std::cout << "Perpendicular lines: " << nbr_perpend << std::endl;
+  //std::cout << "Perpendicular lines: " << nbr_perpend << std::endl;
 
 	Attributes attributes(vec.size(),length/vec.size(),nbr_parallell,nbr_perpend);
 	return attributes;
