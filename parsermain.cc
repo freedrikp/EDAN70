@@ -78,7 +78,7 @@ int main(int argc, char* argv[]){
 
   for (Dataset set : vec){
     Dataset data = set.datasetInterval((startAngle/180)*atan(1)*4,(endAngle/180)*atan(1)*4,distance);
-    data.outputPlotFile("plots");
+    data.outputPlotFile("plots",argv[2]);
     data.outputDatasetFile("datasets");
   }
 

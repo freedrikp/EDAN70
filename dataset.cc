@@ -17,8 +17,9 @@ void Dataset::addPoint(Point p){
   map.insert(std::make_pair(p.getIndex(),p));
 }
 
-void Dataset::outputPlotFile(std::string dir){
+void Dataset::outputPlotFile(std::string dir, std::string fileName){
   std::ofstream file;
+  name = std::string(fileName) + name;
   file.open(dir + "/plot" + name + ".txt");
 
   if (file.is_open()){

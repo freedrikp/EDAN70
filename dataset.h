@@ -14,7 +14,7 @@ public:
   Dataset(std::string name, int nbrPoints, double angleInc);
   void addPoint(Point p);
 
-  void outputPlotFile(std::string dir);
+  void outputPlotFile(std::string dir, std::string fileName);
   Dataset datasetInterval(double startAngle, double endAngle, double distance);
 
   void outputDatasetFile(std::string dir);
