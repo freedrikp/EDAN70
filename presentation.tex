@@ -1,12 +1,12 @@
 \documentclass{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
-%\usepackage{moreverb}
+\usepackage{moreverb}
 %\usepackage{graphicx}
 \usetheme{Madrid}
 \title[Classifying Laser Range Data "Images"] % (optional, only for long titles)
 {Classifying Laser Range Data "Images"}
-%\subtitle{}
+\subtitle{Supervisor: Elin Anna Topp}
 \author[F. Paulsson, S. Senanayake]% (optional, for multiple authors)
 {Fredrik Paulsson \and Shan Senanayake}
 \institute[LTH] % (optional)
@@ -31,12 +31,71 @@ The main task of the project was to make a robot identify certain elements in it
 Thus we divided the project into three parts:
 
 \begin{itemize}
-  \item{Create a parser for the laser range data and transform the data into a more suitable coordinate system}
-  \item{Develop an algorithm that can classify laser range measurements}
-  \item{If time is available, port the programs into ROS (Robot Operating System}
+\pause
+\item{Create a parser for the laser range data and transform the data into a more suitable coordinate system}
+\pause  
+\item{Develop an algorithm that can classify laser range measurements}
+\pause  
+\item{If time is available, port the programs into ROS (Robot Operating System}
 \end{itemize}
-
+\pause
 Offline data to be used during development and if ported into ROS maybe test on online data
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Laser Range Data}
+\framesubtitle{Parser}
+
+The laser scanner took measurements with 4-5 Hz. Each measurement was stored in the following format:
+\begin{verbatim}
+<unknown> <unknown> <number_of_points> <timestamp_seconds>
+<timestamp_microseconds> <unknown> <unknown> <unknown>
+<unknown> <unknown> <unknown> <angle_between_points>
+<unknown> <unknown> <unknown>
+<distance_in_meters>^(number_of_points)
+\end{verbatim}
+
+1 measurement = 1 line
+\\
+1 round of measurements = 1 file
+
+\pause
+\vspace{10pt}
+
+The parser yields polar coordinates which are hard to work with.
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Laser Range Data}
+\framesubtitle{Transformation}
+
+When we have parsed the measurements we transform the data from polar coordinates to our own cartesian-coordinates.
+
+\pause
+\vspace{10pt}
+
+The robot is located at (0,0) and the robot forward is along the y-axis.
+
+\pause
+\vspace{10pt}
+
+Having this coordinate-system makes it much easier to plot the data for us to visually analyze the measurements as well as to process the data.
+
+\pause
+\vspace{10pt}
+
+For instance, we can use well-known algorithms and mathematical formulas to interpolate the data or find patterns in the data.
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Laser Range Data}
+\framesubtitle{Example Plots}
+
+
 
 \end{frame}
 
