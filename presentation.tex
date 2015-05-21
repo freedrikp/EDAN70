@@ -3,6 +3,7 @@
 \usepackage[english]{babel}
 \usepackage{moreverb}
 \usepackage{graphicx}
+\usepackage{wrapfig}
 \usetheme{Madrid}
 \title[Classifying Laser Range Data "Images"] % (optional, only for long titles)
 {Classifying Laser Range Data "Images"}
@@ -20,9 +21,16 @@
 \frame{\titlepage}
 %\tableofcontents
 
-\begin{frame}
+\begin{frame}[shrink]
 \frametitle{Project Description}
 \framesubtitle{Purpose and Goals}
+
+\begin{wrapfigure}{O}{0.25\textwidth}
+\vspace{-35pt}
+  \begin{center}
+    \includegraphics[height=0.87\textheight]{presimg/robot.png}
+  \end{center}
+\end{wrapfigure}
 
 The main task of the project was to make a robot identify certain elements in its surroundings, for example, doors, chairs, tables, humans, e.t.c.
 
@@ -39,7 +47,7 @@ Thus we divided the project into three parts:
 \item{If time is available, port the programs into ROS (Robot Operating System)}
 \end{itemize}
 \pause
-Offline data to be used during development and if ported into ROS maybe test on online data
+Offline data to be used during development and if ported into ROS maybe test on online data.
 
 \end{frame}
 
