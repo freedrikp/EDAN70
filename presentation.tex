@@ -165,5 +165,79 @@ However, this approach has some problems.
 
 \end{frame}
 
+\begin{frame}
+\frametitle{Algorithm}
+\framesubtitle{Directly Comparing Measurements}
+
+The simple interpolation-algorithm to do comparisons:
+
+\begin{itemize}
+\pause
+\item{Draw even lines between all the points in a dataset}
+\pause
+\item{Output a new dataset consisting of evenly distributed points in a dataset}
+\end{itemize}
+
+\pause
+However this is quite an unstable solution since slightest shift will become an error.
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Algorithm}
+\framesubtitle{Line Finding}
+
+The next approach was to go up a abstraction level and try to locate intresting characteristics of the data set.
+Which led us to the line finding algorithm.
+\pause
+
+$y = kx + m$
+$y_{upper} = kx + m + err$
+$y_{lower} = kx + m - err$
+\begin{enumerate}
+\pause
+\item{Find the first line between startpoint and the next point}
+\pause
+\item{Check if the next point is in bounds of $y_{upper}$ and $y_{lower}$}
+\pause
+\item{If 2 Adjust the original line with weight to the new point}
+\pause
+\item{When done check if line length > 0.2 m and has at least 3 points}
+\pause
+\item{Repeat 1 until no more points can be checked}
+\end{enumerate}
+
+This seemed like quite a good algorith to find characteristics in the dataset.
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Algorithm}
+\framesubtitle{Line Finding}
+
+The next approach was to go up a abstraction level and try to locate intresting characteristics of the data set.
+Which led us to the line finding algorithm.
+\pause
+
+$y = kx + m$
+$y_{upper} = kx + m + err$
+$y_{lower} = kx + m - err$
+\begin{enumerate}
+\pause
+\item{Find the first line between startpoint and the next point}
+\pause
+\item{Check if the next point is in bounds of $y_{upper}$ and $y_{lower}$}
+\pause
+\item{If 2 Adjust the original line with weight to the new point}
+\pause
+\item{When done check if line length > 0.2 m and has at least 3 points}
+\pause
+\item{Repeat 1 until no more points can be checked}
+\end{enumerate}
+
+
+\end{frame}
+
 
 \end{document}
