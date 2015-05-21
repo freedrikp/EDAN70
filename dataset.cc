@@ -176,7 +176,7 @@ std::vector<Line> Dataset::determineLines(double threshold){
 		}
 		/*add lines to datastructure*/
 		double length = startPoint.distanceTo(p1);
-		if(length>0.2 && index>3){
+		if(length>0.25 && index>3){
 			double m = startPoint.getYCoord() - startPoint.getXCoord() * startK;
 			Line l(startK,m,length);
 			lineVector.push_back(l);
@@ -213,7 +213,7 @@ Attributes Dataset::lineAttributes(double err1, double err2, double err3){
         //calculate angle between lines
         double angle = (std::atan(std::abs((elem.getK() - elem1.getK())/(1 + (elem.getK()*elem1.getK())))))*180/3.141592;
         //if angle = 0 + error margin, and the line has not already been checked.
-        if(angle<err2 && already_checked_parallel.find(elem) == already_checked_parallel.end()){
+        if(angle<err2 && already_checked_parallel.find(elem) == already_checked_parallel.end() && already_checked_parallel.find(elem1) == already_checked_parallel.end()){
           ++nbr_parallell;
           already_checked_parallel.insert(elem1);
 			if(firstPara){
@@ -223,16 +223,18 @@ Attributes Dataset::lineAttributes(double err1, double err2, double err3){
           //if the angle is perpendicualr + error margin and the line has not already been checked.
         }else if(angle>(90-err3) && already_checked_perpend.find(elem) == already_checked_perpend.end()){
           ++nbr_perpend;
-          already_checked_perpend.insert(elem1);
-			if(firstPerpend){
+			if(firstPerpend && already_checked_perpend.find(elem1) == already_checked_perpend.end()){
 				++nbr_perpend;
 				firstPerpend = false;
 			}
+          already_checked_perpend.insert(elem1);
         }
 		//std::cout << "Angle " << angle << " para: " << nbr_parallell << " perpend: " << nbr_perpend << std::endl;
       }
     }
   }
+  //std::cout << "Number of lines: " << vec.size() << std::endl;
+  
   //std::cout << "Mean length of lines: " << (length/vec.size()) << std::endl;
 
   //std::cout << "Parallell lines: " << nbr_parallell << std::endl;
