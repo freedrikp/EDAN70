@@ -30,7 +30,7 @@
 \begin{wrapfigure}{O}{0.25\textwidth}
 \vspace{-35pt}
   \begin{center}
-    %\includegraphics[height=0.87\textheight]{presimg/robot.png}
+    \includegraphics[height=0.87\textheight]{presimg/robot.png}
   \end{center}
 \end{wrapfigure}
 
@@ -214,7 +214,7 @@ y_{lower} & = kx + m - err \\
 \item{\label{itm:first}Find the first line between startpoint and the next point}
 \item{\label{itm:snd}Check if the next point is in bounds of $y_{upper}$ and $y_{lower}$}
 \item{If \ref{itm:snd} Adjust the original line with weight to the new point}
-\item{When done check if line length $>$ 0.2 m and has at least 3 points}
+\item{When done check if line length $>$ 0.25 m and has at least 3 points}
 \item{Repeat \ref{itm:first} until no more points can be checked}
 \end{enumerate}
 
@@ -260,8 +260,10 @@ The algorithm we chose was the ID3 (Decision tree algorithm) which was a perfect
 \begin{frame}
 \frametitle{Conclusion}
  There are a lot of parameters that can be tweaked to get better results.
+
  \pause 
- \vspace{10}
+ \vspace{10pt}
+
 The attributes we have might not be enough.
 \end{frame}
 
