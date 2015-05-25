@@ -168,11 +168,51 @@ We decided to start the implementation with a simple linear interpolation algori
   \end{algorithmic}
 \end{algorithm}
 
-This algorithm is heayvly influenced by a simple linear spline interpolation. The \texttt{Number of points N} variable is an input to decide how many points one wants to represent the Dataset in. The \texttt{distance increment d} is used to check out where the next point should lie. \texttt{Total distance} is the total distance if you walk through all the points in the dataset (Just like connecting the dots). The \texttt{$lower < i < upper$} is to check if the distance $i$ lies inbetween the \texttt{lower} and \texttt{upper} points. \texttt{Calculate point of($i$)} is used to calculate the point that should lie on that distance.
+This algorithm is heayvly influenced by a simple linear spline interpolation\ref{interpolation}. The \texttt{Number of points N} variable is an input to decide how many points one wants to represent the Dataset in. The \texttt{distance increment d} is used to check out where the next point should lie. \texttt{Total distance} is the total distance if you walk through all the points in the dataset (Just like connecting the dots). The \texttt{$lower < i < upper$} is to check if the distance $i$ lies inbetween the \texttt{lower} and \texttt{upper} points. \texttt{Calculate point of($i$)} is used to calculate the point that should lie on that distance.
 
 \subsection{Line finding}
 The other approach to representing data was a bit more of an abstract apporach. Instead of comparing the dataset against each other directly by using interpolation we decided to find characteristics within the dataset itself. 
+
+The line finding algorithm does exactly what it says it finds lines in a given dataset, and given thease lines we can decide different characteristics. For instance the characteristics we chose to determine doors was how many lines there are, what is the mean length of thease lines, how many are parallel against each other and finally, how many are perpendicular against each other.
+
+The thought process behind this stems from this article\ref{legfinding} which handles how to detect legs in laser range data. We have a simple line finding algorithm, that draws a line between the first two points in a set and then uses this line to check if the next line between the first and the third point are in a given bounding box. The bounding box is determined by the simple line equation $y = kx + m$ where the upper and lower limit is determined by $y = kx + \pm err$. 
+
+To not make the first k-value to set the entire lines value we have decided to tweak the k-value depinding on the amount of points already evaluated. This is done by calculating the weight each point has (in essence the effect) on the overall line and then updating the k value depending on the weight.
+
+To reduce noise and wrong line finding we have determined to qualify for a line in the dataset it has to have more than 3 points from the dataset and the length of the line has to be greater than 0.25 m.
 \subsubsection{Implementation}
+Line finding psuduoucode:
+
+\begin{algorithm}
+  \caption{Line finding}\label{forward}
+  \begin{algorithmic}[1]
+      \State \texttt{Dataset S}
+      \State \texttt{Error limit E}
+      \State \texttt{Point start in S}
+      \State \texttt{Array of lines A}
+      \While{\texttt{S has unevaluated points}}
+      	\State \texttt{Point p1 in S}
+      	\State \texttt{$k$ = Calculate K Of (start,p1)}
+      	\State \texttt{$d$ = Distance of (start,p1)}
+      	\While{Is a valid line}
+      		\State \texttt{Point p2 in S}
+      		\State \texttt{$lower$ = calculate lower of line (start,$k$,E)}
+      		\State \texttt{$higher$ = calculate higher of line (start,$k$,E)}
+      		\If{Check if point is in bound ($lower$,p2,$higher$)}
+      			\State \texttt{$new_k$ = calculate k of (start,p2)}
+      			\State \texttt{update k ($k$,$new_k$)}
+      			\State \texttt{p1 = p2}
+      		\Else
+      			\State \texttt{break inner loop}
+      		\EndIf
+      	\EndWhile
+      	\If{line is valid($k$,start)}
+      		\State \texttt{A.add($k$,start)}
+      	\EndIf
+      \EndWhile
+      \Return \texttt{A}
+  \end{algorithmic}
+\end{algorithm}
 
 \subsection{Decision Tree}
 
@@ -223,6 +263,9 @@ The next problem to solve was that we realized that in principle we needed to ov
 
 
 \begin{thebibliography}{}
+\bibitem{interpolation} here goes interpolation source
+
+\bibitem{legfinding} http://miarn.sourceforge.net/pdf/a1738b.pdf
 
 \bibitem{bla}blabla
 
