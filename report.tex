@@ -175,6 +175,11 @@ This algorithm is heayvly influenced by a simple linear spline interpolation. Th
 \subsubsection{Implementation}
 
 \subsection{Decision Tree}
+When we had identified line characteristics in our measurements as described above we had raised the level of abstraction in our data. Instead of comparing point by point against each other in order to identify patterns we could now decide based on the characteristics to which class the given measurement belongs. After some research we deduced that a decision tree was a good way to proceed within the machine learning area of artificial intelligence.
+
+The great part of decision trees that attracted us was the fact that the input to the algorithm can be several very abstract variables. The variables can be both discrete values or real values. Decision trees also has one big advantage and that is that they are very robust against errors and noise in the training examples \cite{ml3}. The measurements that we have used can be very noise so decision trees seemed like it would work very well.
+
+Our classification problem were going to consist of more than simply two classes. However, the decision tree outputs only a boolean, yes/no, classification for each measurement \cite{ml3}. The way we solved this problem was to use a so called one-vs-rest classifier \cite{praml}. This essentially means that we train one classifier, or in our case one decision tree, for each class that we want be able to classify. The output from each of these classifiers is simply a yes if the measurement is part of that class or no if the measurement is not part of that specific class but may be a member of the others.
 
 \subsubsection{Implementation}
 
@@ -225,7 +230,8 @@ The next problem to solve was that we realized that in principle we needed to ov
 \begin{thebibliography}{}
 
 \bibitem{bla}blabla
-
+\bibitem{ml3} Mitchell, Tom M. Machine Learning. 1997. Chapter 3.
+\bibitem{praml} Bishop, Christopher M. 2006. Pattern Recognition and Machine Learning. Chapter 4, section 1.2.
 \end{thebibliography}
 
 
