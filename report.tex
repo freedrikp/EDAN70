@@ -134,6 +134,8 @@ The idea behind this approach was to store measurements and their respective cla
 
 This idea would combine both unsupervised and supervised machine learning. The supervised learning came into play because there would need to be a databse from the start. The classifications contained in this databse had to be manually classified by us. The unsupervised learning takes place because the classifier extends it database on each run.
 
+Possibly, the above algorithm could incorporate thresholds and a default classification. Essentially this means that if there did not exist a match that had an error less than the threshold the clasifier might assign the classification unknown or something simillar. This acts as the default classification and if it is used the algorithm should not add the newly classified measurement to it's database.
+
 \subsubsection{Implementation}
 We decided to start the implementation with a simple linear interpolation algorithm, that looks like:
 
@@ -154,12 +156,12 @@ We decided to start the implementation with a simple linear interpolation algori
       	\ElsIf{$upper == i$}
       		\State A.add($upper$)
       	\Else
-      		\While{$i>higher$ \and S.End}
+      		\While{$i>higher$ and S.End}
       			\State \texttt{increment $lower$}
       			\State \texttt{increment $upper$}
       		\EndWhile
       	\EndIf
-      \EndFor
+      \EndWhile
   \end{algorithmic}
 \end{algorithm}
 
