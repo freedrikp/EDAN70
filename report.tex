@@ -125,6 +125,7 @@ Now that we had coordinates in a much more manageable represenation we could vis
 In this section we will explain all of the algorithms we used and how they were implemented. 
 
 We hade two different approaches when trying to figure out a way to represent the data in a form where we could easily apply some form of machine learning on it. This was the biggest challange we had to overcome in the project. 
+
 \subsection{Interpolation and Comparison}
 After transferring the data to a form which we could more easily differentiate the characteristics of the data we decided to try a interpolation approach. This approach consisted of interpolating the data points to get a 'figure' of some sorts which we could use as a characteristic for a classifier.
 
@@ -179,9 +180,17 @@ The other approach to representing data was a bit more of an abstract apporach. 
 
 \section{RESULTS}
 
+\subsection{Interpolation and Comparison}
+While implementing this algorithm we encountered several practical problems and eventually we relaized that this was not going to work very well. Therefore, we abandoned this approach and starting researching other ways resulting in the second idea explained above. Thus, we have no results to provide from this algorithm other than we never got it working.
+
 \section{DISCUSSION}
 
 \subsection{Algorithms}
+
+\subsubsection{Interpolation and Comparison}
+A stated above we realized that this algorithm would not work and we never finished the implementation. There were several reasons for this. First of all, the datasets that we recevied from our parser were all simply a set of points. Potentially the different measurements that we were going to store could come from different laser range scanners. Thus, a certain number of points could describe two differently sized fields of view. This is the main reason why we introduced interpolation so that we could compare the same points on the two different measurements.
+
+The next problem to solve was that we realized that in principle we needed to overlay each measurement on the other and then glide them over each other in order to minimize the error between them. However, even the slightest shift could introduce huge errors. We never came up with a solution to this problem and instead we chose to abandon this approach and research other ways of classifying measurements.
 
 \section{CONCLUSION}
 
