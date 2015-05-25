@@ -171,6 +171,7 @@ We decided to start the implementation with a simple linear interpolation algori
 This algorithm is heayvly influenced by a simple linear spline interpolation\ref{interpolation}. The \texttt{Number of points N} variable is an input to decide how many points one wants to represent the Dataset in. The \texttt{distance increment d} is used to check out where the next point should lie. \texttt{Total distance} is the total distance if you walk through all the points in the dataset (Just like connecting the dots). The \texttt{$lower < i < upper$} is to check if the distance $i$ lies inbetween the \texttt{lower} and \texttt{upper} points. \texttt{Calculate point of($i$)} is used to calculate the point that should lie on that distance.
 
 \subsection{Line finding}
+\label{sec:line_find}
 The other approach to representing data was a bit more of an abstract apporach. Instead of comparing the dataset against each other directly by using interpolation we decided to find characteristics within the dataset itself. 
 
 The line finding algorithm does exactly what it says it finds lines in a given dataset, and given thease lines we can decide different characteristics. For instance the characteristics we chose to determine doors was how many lines there are, what is the mean length of thease lines, how many are parallel against each other and finally, how many are perpendicular against each other.
@@ -181,7 +182,7 @@ To not make the first k-value to set the entire lines value we have decided to t
 
 To reduce noise and wrong line finding we have determined to qualify for a line in the dataset it has to have more than 3 points from the dataset and the length of the line has to be greater than 0.25 m.
 \subsubsection{Implementation}
-Line finding psuduoucode:
+The psudeuocode for the Line finding algorithm can be found here \ref{lineFinding}.
 
 \begin{algorithm}
   \caption{Line finding}\label{LineFinding}
@@ -213,6 +214,8 @@ Line finding psuduoucode:
       \Return \texttt{A}
   \end{algorithmic}
 \end{algorithm}
+
+Just as explained in \ref{sec:line_find} the line finding algorithm takes a thick line and adjusts the k-value for each point that fits in the line. The function \texttt{Caluculate k of (start,p1)} just calculates the $k$ value of two points accordning to the regular linear equation $k = \frac{\delta y}{\delta x}$.
 
 \subsection{Decision Tree}
 When we had identified line characteristics in our measurements as described above we had raised the level of abstraction in our data. Instead of comparing point by point against each other in order to identify patterns we could now decide based on the characteristics to which class the given measurement belongs. After some research we deduced that a decision tree was a good way to proceed within the machine learning area of artificial intelligence.
