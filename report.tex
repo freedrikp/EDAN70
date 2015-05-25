@@ -141,7 +141,7 @@ Possibly, the above algorithm could incorporate thresholds and a default classif
 We decided to start the implementation with a simple linear interpolation algorithm, that looks like:
 
 \begin{algorithm}
-  \caption{Simple lerp}\label{forward}
+  \caption{Simple lerp}\label{lerp}
   \begin{algorithmic}[1]
       \State \texttt{Dataset S}
       \State \texttt{Number of points N}
@@ -184,7 +184,7 @@ To reduce noise and wrong line finding we have determined to qualify for a line 
 Line finding psuduoucode:
 
 \begin{algorithm}
-  \caption{Line finding}\label{forward}
+  \caption{Line finding}\label{LineFinding}
   \begin{algorithmic}[1]
       \State \texttt{Dataset S}
       \State \texttt{Error limit E}
