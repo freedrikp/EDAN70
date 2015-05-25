@@ -225,6 +225,9 @@ The great part of decision trees that attracted us was the fact that the input t
 Our classification problem were going to consist of more than simply two classes. However, the decision tree outputs only a boolean, yes/no, classification for each measurement \cite{ml3}. The way we solved this problem was to use a so called one-vs-rest classifier \cite{praml}. This essentially means that we train one classifier, or in our case one decision tree, for each class that we want be able to classify. The output from each of these classifiers is simply a yes if the measurement is part of that class or no if the measurement is not part of that specific class but may be a member of the others.
 
 \subsubsection{Implementation}
+The algorithm that generates our decision tree is the well-known ID3 algorithm. Our exact implementation is based on the description and structure presented in \cite{aima}, however, a more formal presentation can be found in \cite{ml3}. As discussed in \cite{aima} our algorithm selects the attributes to split on by their information gain. In order to use real continuous values for the branches we use splitpoints.
+
+However, the process of aquiring good splitpoint values we use the process described in \cite{ml3}. The process of selecting a good splitpoint for a certain attribute is by sorting the examples by the attribute. The next step is to find all pairs of adjacent examples in the sorted list that differs in their classifications. For each pair, one calculates the information gain of the mean of the pair's values. Then it is simply to select the pair whose mean value maximizes the information gain.
 
 \section{RESULTS}
 
@@ -278,6 +281,7 @@ The next problem to solve was that we realized that in principle we needed to ov
 \bibitem{bla}blabla
 \bibitem{ml3} Mitchell, Tom M. Machine Learning. 1997. Chapter 3.
 \bibitem{praml} Bishop, Christopher M. 2006. Pattern Recognition and Machine Learning. Chapter 4, section 1.2.
+\bibitem{aima} Russel, Stuart. Norvig, Peter. Artificial Intelligence: A Modern Approach. Third edition. 2010. Chapter 18. 
 \end{thebibliography}
 
 
