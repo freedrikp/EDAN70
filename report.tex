@@ -76,6 +76,12 @@ Each measurement looks like the following:
 
 As can be seen there are a lot of unknown values that we do not know and that our supervisor could not explain to us. However, these values are not needed by us in this project. The most important values are the number of points, the angle between the points and for each point the distance to the point.
 
+Directly parsing the above format of each mesurement yields polar coordinates. Polar coordinates are very hard to work with as they are not easily visualized or easily worked with. This made us constructing a transformation of these polar coordinates into our own cartesian coordinate system.
+
+Our coordinate system is based on some basic principles. The robot is positioned at origin and is the front of the robot is along the y-axis. This is basically the standard way to transform between polar and cartesian coordinates. The only special this is that the angle for the polar coordinates is expressed from the starting point. However, the starting point may be located at different angles from the x-axis depending on the specific type of laser range scanner. Different scanners may have a different number of points, different angle between the points and differently sized fields of view. With field of view we mean the entire angle that the scanner scans. In order to manage this problem we chose to express the angle from the y-axis instead and thus replace the use of sinus and cosinus with each other in the standard transform and also to manage the sign of each coordinate.
+
+Now that we had coordinates in a much more manageable represenation we could visualize the data for ourself and we could use stanard mathematical formulas in order to work with each measurement.
+
 \section{ALGORITHM}
 We hade two different approaches when trying to figure out a way to represent the data in a form where we could easily apply some form of machine learning on it. This was the biggest challange we had to overcome in the project. 
 \subsection{Interpolation and Comparison}

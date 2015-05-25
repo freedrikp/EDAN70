@@ -203,7 +203,7 @@ Attributes Dataset::lineAttributes(double err1, double err2, double err3){
 
 
   for (auto elem : vec){
-    //std::cout << "K-value: " << elem.getK() << " M-value: " << elem.getM() << " Length: "<< elem.getLength() << std::endl;
+    std::cout << "K-value: " << elem.getK() << " M-value: " << elem.getM() << " Length: "<< elem.getLength() << std::endl;
     length += elem.getLength();
 		bool firstPara = true;
 		bool firstPerpend = true;
