@@ -128,7 +128,11 @@ We hade two different approaches when trying to figure out a way to represent th
 \subsection{Interpolation and Comparison}
 After transferring the data to a form which we could more easily differentiate the characteristics of the data we decided to try a interpolation approach. This approach consisted of interpolating the data points to get a 'figure' of some sorts which we could use as a characteristic for a classifier.
 
-The interpolation is mainly used to get an evenly distributed set of point which we could use to directly compare with another set of points to see how much error they have. 
+The interpolation is mainly used to get an evenly distributed set of point which we could use to directly compare with another set of points to see how much error they have.
+
+The idea behind this approach was to store measurements and their respective classifications in some sort of database. When the classifier then receives a measurement to classify the classifier would iterate over the database and using the interpolation to directly compare the new measurement with all measurements stored in the database. The classification of the best match in the database would then be assigned to the new measurement. And finally the new measurement and it's classifaction were to be stored in the database.
+
+This idea would combine both unsupervised and supervised machine learning. The supervised learning came into play because there would need to be a databse from the start. The classifications contained in this databse had to be manually classified by us. The unsupervised learning takes place because the classifier extends it database on each run.
 
 \subsubsection{Implementation}
 We decided to start the implementation with a simple linear interpolation algorithm, that looks like:
