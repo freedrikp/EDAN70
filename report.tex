@@ -140,13 +140,25 @@ We decided to start the implementation with a simple linear interpolation algori
 \begin{algorithm}
   \caption{Simple lerp}\label{forward}
   \begin{algorithmic}[1]
-      \State \texttt{State Probability Vector S}
-      \State \texttt{Transition model T}
-      \State \texttt{Observation Vector O}
-      \For{\texttt{row = 0 .. S.size}}
-      	\For{\texttt{col = 0 .. S.size}}
-      		\State $S(row)_{next} += \alpha O(row) \cdot T(col)(row) \cdot S(col)_{prev}$
-      	\EndFor
+      \State \texttt{Dataset S}
+      \State \texttt{Number of points N}
+      \State \texttt{Distance increment d = Total distance / N}
+      \State \texttt{$i = 0$}
+      \State \texttt{Point lower,upper in S}
+      \State \texttt{Array of points A}
+      \While{\texttt{$i <$ Total distance}}
+      	\If{$lower < i < upper$}
+      		\State A.add(Calculate progress of ($i$));
+      	\ElsIf{$lower == i$}
+      		\State A.add($lower$)
+      	\ElsIf{$upper == i$}
+      		\State A.add($upper$)
+      	\Else
+      		\While{$i>higher$ \and S.End}
+      			\State \texttt{increment $lower$}
+      			\State \texttt{increment $upper$}
+      		\EndWhile
+      	\EndIf
       \EndFor
   \end{algorithmic}
 \end{algorithm}
