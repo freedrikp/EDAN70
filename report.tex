@@ -170,7 +170,7 @@ We decided to start the implementation with a simple linear interpolation algori
 This algorithm is heayvly influenced by a simple linear spline interpolation. The \texttt{Number of points N} variable is an input to decide how many points one wants to represent the Dataset in. The \texttt{distance increment d} is used to check out where the next point should lie. \texttt{Total distance} is the total distance if you walk through all the points in the dataset (Just like connecting the dots). The \texttt{$lower < i < upper$} is to check if the distance $i$ lies inbetween the \texttt{lower} and \texttt{upper} points. \texttt{Calculate point of($i$)} is used to calculate the point that should lie on that distance.
 
 \subsection{Line finding}
-
+The other approach to representing data was a bit more of an abstract apporach. Instead of comparing the dataset against each other directly by using interpolation we decided to find characteristics within the dataset itself. 
 \subsubsection{Implementation}
 
 \subsection{Decision Tree}
