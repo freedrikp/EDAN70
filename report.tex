@@ -22,6 +22,8 @@
 %\usepackage{times} % assumes new font selection scheme installed
 \usepackage{amsmath} % assumes amsmath package installed
 %\usepackage{amssymb}  % assumes amsmath package installed
+\usepackage{algorithm}% http://ctan.org/pkg/algorithm
+\usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx
 
 \title{\LARGE \bf Project Report \\ EDAN70 Project in Computer Science \\ Intelligent Systems \\ Classifying Laser Range Data "Images" \\ Supervisor: Elin Anna Topp}
 \date{\today}
@@ -83,8 +85,24 @@ We hade two different approaches when trying to figure out a way to represent th
 \subsection{Interpolation and Comparison}
 After transferring the data to a form which we could more easily differentiate the characteristics of the data we decided to try a interpolation approach. This approach consisted of interpolating the data points to get a 'figure' of some sorts which we could use as a characteristic for a classifier.
 
+The interpolation is mainly used to get an evenly distributed set of point which we could use to directly compare with another set of points to see how much error they have. 
+
 \subsubsection{Implementation}
-We decided to start the implementation with a simple linear interpolation algorithm, that looks like 
+We decided to start the implementation with a simple linear interpolation algorithm, that looks like:
+
+\begin{algorithm}
+  \caption{Simple lerp}\label{forward}
+  \begin{algorithmic}[1]
+      \State \texttt{State Probability Vector S}
+      \State \texttt{Transition model T}
+      \State \texttt{Observation Vector O}
+      \For{\texttt{row = 0 .. S.size}}
+      	\For{\texttt{col = 0 .. S.size}}
+      		\State $S(row)_{next} += \alpha O(row) \cdot T(col)(row) \cdot S(col)_{prev}$
+      	\EndFor
+      \EndFor
+  \end{algorithmic}
+\end{algorithm}
 
 \subsection{Line finding}
 
