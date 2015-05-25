@@ -175,7 +175,7 @@ The other approach to representing data was a bit more of an abstract apporach. 
 
 The line finding algorithm does exactly what it says it finds lines in a given dataset, and given thease lines we can decide different characteristics. For instance the characteristics we chose to determine doors was how many lines there are, what is the mean length of thease lines, how many are parallel against each other and finally, how many are perpendicular against each other.
 
-The thought process behind this stems from this article\ref{legfinding} which handles how to detect legs in laser range data. We have a simple line finding algorithm, that draws a line between the first two points in a set and then uses this line to check if the next line between the first and the third point are in a given bounding box. The bounding box is determined by the simple line equation $y = kx + m$ where the upper and lower limit is determined by $y = kx + \pm err$. 
+The thought process behind this stems from this article\ref{legfinding} which handles how to detect legs in laser range data. We have a simple line finding algorithm, that draws a line between the first two points in a set and then uses this line to check if the next line between the first and the third point are in a given bounding box. The bounding box is determined by the simple line equation $y = kx + m$ where the upper and lower limit is determined by $y = kx + m \pm err$. 
 
 To not make the first k-value to set the entire lines value we have decided to tweak the k-value depinding on the amount of points already evaluated. This is done by calculating the weight each point has (in essence the effect) on the overall line and then updating the k value depending on the weight.
 
