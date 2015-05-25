@@ -80,7 +80,32 @@ Directly parsing the above format of each mesurement yields polar coordinates. P
 
 Our coordinate system is based on some basic principles. The robot is positioned at origin and is the front of the robot is along the y-axis. This is basically the standard way to transform between polar and cartesian coordinates. The only special this is that the angle for the polar coordinates is expressed from the starting point. However, the starting point may be located at different angles from the x-axis depending on the specific type of laser range scanner. Different scanners may have a different number of points, different angle between the points and differently sized fields of view. With field of view we mean the entire angle that the scanner scans. In order to manage this problem we chose to express the angle from the y-axis instead and thus replace the use of sinus and cosinus with each other in the standard transform and also to manage the sign of each coordinate.
 
-Now that we had coordinates in a much more manageable represenation we could visualize the data for ourself and we could use stanard mathematical formulas in order to work with each measurement.
+Now that we had coordinates in a much more manageable represenation we could visualize the data for ourself and we could use standard mathematical formulas in order to work with each measurement. As we needed to manually classify measurements in order to feed these to the classifier as a starting ground it was vital that we could easily plot the measurements. This was easily done in Matlab or Octave when we had our cartesian coordinates. Below follows some example plots:
+
+
+\begin{figure}[h]
+\centering
+\includegrahpics[]{presimg/chair.jpg}
+\caption{}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegrahpics[]{presimg/doorhalf.jpg}
+\caption{}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegrahpics[]{presimg/doorfull.jpg}
+\caption{}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegrahpics[]{presimg/human.jpg}
+\caption{}
+\end{figure}
 
 \section{ALGORITHM}
 In this section we will explain all of the algorithms we used and how they were implemented. 
