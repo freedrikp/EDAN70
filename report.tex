@@ -7,6 +7,8 @@
 
 \documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4 paper
 \usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
 \IEEEoverridecommandlockouts                              % This command is only needed if
                                                           % you want to use the \thanks command
 
@@ -39,34 +41,42 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\begin{abstract}
+\begin{abstract}
+This report documents a project in which we developed a classifier for laser range data "images". The classifier was based on machine learning meaning that the classifier identified measurements and classified them based on previosuly known classifications of measurements.
 
-%This electronic document is a �live� template. The various components of your paper [title, text, heads, etc.] are already defined on the style sheet, as illustrated by the portions given in this document.
+In the report we describe two approches to solve the problem of developing this classification. The different approaches works on different levels of abstraction, one based on individual points and one based on lines among the points. There was several problems with the classifier working among points while we had more success with the one working on points.
 
-%\end{abstract}
+Because of time constraints we did not have much time to work the the second approch but in the report we list the results that we have produced and we also specify improvements that can be made in order for it to possibly work much better.
+
+
+\end{abstract}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{INTRODUCTION}
 
-In this project we are to develop a classifier that takes as input laser range data and output a classification of the data. The classification may be \emph{door}, \emph{wall} and similar objects.
+In this project we were to develop a classifier that takes as input laser range data and outputs a classification of the data. The classification may be \emph{door}, \emph{open space}, \emph{clutter} and maybe \emph{wall} and similar objects.
 
-The goal is to implement this as a ROS node in C++ that can run online on a robot.
+The goal was to implement the calssifier as a ROS node in C++ so that it could run online on a robot.
 
-The project consists of several parts. The first part is to develop a parser for the laser range data that will put the data in some kind of a data structure as well as transforming the represenation into a form that is easier to work with.
+The project consists of several parts. The first part was to develop a parser for the laser range data that wrapped the data in suitable data structures as well as transforming the representation into a form that was easier to work with.
 
-The second part is to develop and implement an algorithm that has the abillity to classify the laser range data. This algorithm is supposed to operate within the data structures that our parser has created.
+The second part was to develop and implement an algorithm that had the abillity to classify the laser range data. This algorithm were supposed to operate within the data structures that our parser had created.
 
-The third part is to port the classifier into a ROS node and test it in an online environment running on the robot. During development we will use laser range data that has been gathered in the past.
+The third part was to port the classifier into a ROS node and test it in an online environment running on the robot. 
+
+During development we used laser range data that had been gathered in the past.
 
 This report will serve as documentation of our project.
 
 \section{Machine Learning}
-We are both very interested in machine learning and has therefore decided to develop our classifier within the machine learning area of artificial intelligence.
+We are both very interested in machine learning and therefore we decided to develop our classifier within the machine learning area of artificial intelligence.
 
-The idea that we have is to combine both supervised and unsupervised learning for use in order to classify laser range data. We will start of by manually classifying some data and put it into a database. When the classifier is used it will browse the database and find out which laser range data in the database that matches best with the data to be classified. It will then give the new data the same classification as the data that matched best.
+The idea that we had was to combine both supervised and unsupervised learning for use in order to classify laser range data. The original idea that we had was based on manually classifying some measurements in order for the classifier to have a database to start with. When the classifier was to be used it was going to browse the database and find out which laser range data in the database that matched best with the measurement that was going to be classified. It was then going to give the new data the same classification as the data that matched best. We also visioned that the new classification might be added to the database in order for the robot to learn.
 
-There should be a threshold on how much the best match in the database must match the new data. If this threshold is crossed the classifier will either be unable to give a classification, give an "unknown" classification or simply prompt a warning that this classification may be wrong.
+We had discussed and thought about having a threshold on how good the best match needed to be in order for it to be used. If that threshold was crossed the classifier would either be unable to give a classification, give an "unknown" classification or simply prompt a warning that the classification may be wrong. Also we thought about having a threshold on the match that was going to be even harder to accomplish than the threshold previosly introduced. This threshhold was simply going to control whether or not the new classification was going to be added to the database. This was for allowing a poor match to be successfully classified but not to extending the database with "bad" knowledge.
+
+However, later on in the project we changed the approach from our original idea to switch to using decision trees instead. This new idea was based on identifying characteristics in the measurements and then use these characteristics in order to classify measurements. The advantage with this approach was that we raised the abstraction level of the classifier. Instead of working on individual points it worked on patterns recognized among the points.
 
 \section{PARSER}
 The offline data of measurements that we have used to test our classifier and based the supervised learning part on was given to us in a specific format. All measurements gathered in one run of the robot's laser range scanner is put into one single file called \emph{scans.dat}. Each single measurement is placed on its own line. Measurements were gathered with a frequency of 4-5 Hz according to our supervisor.
@@ -77,9 +87,11 @@ Each measurement looks like the following:
 
 \begin{verbatim}
 <unknown> <unknown> <number_of_points>
-<timestamp_seconds> <timestamp_microseconds>
+<timestamp_seconds> 
+<timestamp_microseconds>
 <unknown> <unknown> <unknown> <unknown>
-<unknown> <unknown> <angle_between_points>
+<unknown> <unknown> 
+<angle_between_points>
 <unknown> <unknown> <unknown>
 <distance_in_meters>^<number_of_points>
 \end{verbatim}
@@ -90,7 +102,7 @@ Directly parsing the above format of each mesurement yields polar coordinates. P
 
 Our coordinate system is based on some basic principles. The robot is positioned at origin and is the front of the robot is along the y-axis. This is basically the standard way to transform between polar and cartesian coordinates. The only special this is that the angle for the polar coordinates is expressed from the starting point. However, the starting point may be located at different angles from the x-axis depending on the specific type of laser range scanner. Different scanners may have a different number of points, different angle between the points and differently sized fields of view. With field of view we mean the entire angle that the scanner scans. In order to manage this problem we chose to express the angle from the y-axis instead and thus replace the use of sinus and cosinus with each other in the standard transform and also to manage the sign of each coordinate.
 
-Now that we had coordinates in a much more manageable represenation we could visualize the data for ourself and we could use standard mathematical formulas in order to work with each measurement. As we needed to manually classify measurements in order to feed these to the classifier as a starting ground it was vital that we could easily plot the measurements. This was easily done in Matlab or Octave when we had our cartesian coordinates. Figures \ref{human}, \ref{doorhalf}, \ref{doorfull} and \ref{chair} shows som example plots.
+Now that we had coordinates in a much more manageable represenation we could visualize the data for ourself and we could use standard mathematical formulas in order to work with each measurement. As we needed to manually classify measurements in order to feed these to the classifier as a starting ground it was vital that we could easily plot the measurements. This was easily done in Matlab or Octave when we had our cartesian coordinates. Figures \ref{human}, \ref{doorhalf}, \ref{doorfull} and \ref{chair} shows some example plots.
 
 
 \begin{figure}
@@ -138,10 +150,10 @@ This idea would combine both unsupervised and supervised machine learning. The s
 Possibly, the above algorithm could incorporate thresholds and a default classification. Essentially this means that if there did not exist a match that had an error less than the threshold the clasifier might assign the classification unknown or something simillar. This acts as the default classification and if it is used the algorithm should not add the newly classified measurement to it's database.
 
 \subsubsection{Implementation}
-We decided to start the implementation with a simple linear interpolation algorithm, that looks like:
+We decided to start the implementation with a simple linear interpolation algorithm, pseudocode is found in algorithm \ref{lerp}.
 
 \begin{algorithm}
-  \caption{Simple lerp}\label{lerp}
+  \caption{\label{lerp}Simple lerp}
   \begin{algorithmic}[1]
       \State \texttt{Dataset S}
       \State \texttt{Number of points N}
@@ -168,7 +180,7 @@ We decided to start the implementation with a simple linear interpolation algori
   \end{algorithmic}
 \end{algorithm}
 
-This algorithm is heayvly influenced by a simple linear spline interpolation\ref{interpolation}. The \texttt{Number of points N} variable is an input to decide how many points one wants to represent the Dataset in. The \texttt{distance increment d} is used to check out where the next point should lie. \texttt{Total distance} is the total distance if you walk through all the points in the dataset (Just like connecting the dots). The \texttt{$lower < i < upper$} is to check if the distance $i$ lies inbetween the \texttt{lower} and \texttt{upper} points. \texttt{Calculate point of($i$)} is used to calculate the point that should lie on that distance.
+This algorithm is heayvly influenced by a simple linear spline interpolation \cite{interpolation}. The \texttt{Number of points N} variable is an input to decide how many points one wants to represent the Dataset in. The \texttt{distance increment d} is used to check out where the next point should lie. \texttt{Total distance} is the total distance if you walk through all the points in the dataset (Just like connecting the dots). The \texttt{$lower < i < upper$} is to check if the distance $i$ lies inbetween the \texttt{lower} and \texttt{upper} points. \texttt{Calculate point of($i$)} is used to calculate the point that should lie on that distance.
 
 \subsection{Line finding}
 \label{sec:line_find}
@@ -176,16 +188,16 @@ The other approach to representing data was a bit more of an abstract apporach. 
 
 The line finding algorithm does exactly what it says it finds lines in a given dataset, and given thease lines we can decide different characteristics. For instance the characteristics we chose to determine doors was how many lines there are, what is the mean length of thease lines, how many are parallel against each other and finally, how many are perpendicular against each other.
 
-The thought process behind this stems from this article\ref{legfinding} which handles how to detect legs in laser range data. We have a simple line finding algorithm, that draws a line between the first two points in a set and then uses this line to check if the next line between the first and the third point are in a given bounding box. The bounding box is determined by the simple line equation $y = kx + m$ where the upper and lower limit is determined by $y = kx + m \pm err$. 
+The thought process behind this stems from this article \cite{legfinding} which handles how to detect legs in laser range data. We have a simple line finding algorithm, that draws a line between the first two points in a set and then uses this line to check if the next line between the first and the third point are in a given bounding box. The bounding box is determined by the simple line equation $y = kx + m$ where the upper and lower limit is determined by $y = kx + m \pm err$. 
 
 To not make the first k-value to set the entire lines value we have decided to tweak the k-value depinding on the amount of points already evaluated. This is done by calculating the weight each point has (in essence the effect) on the overall line and then updating the k value depending on the weight.
 
 To reduce noise and wrong line finding we have determined to qualify for a line in the dataset it has to have more than 3 points from the dataset and the length of the line has to be greater than 0.25 m.
 \subsubsection{Implementation}
-The psudeuocode for the Line finding algorithm can be found here \ref{lineFinding}.
+The pseudocode for the Line finding algorithm can be found in algorithm \ref{lineFinding}.
 
 \begin{algorithm}
-  \caption{Line finding}\label{LineFinding}
+  \caption{\label{lineFinding}Line finding}
   \begin{algorithmic}[1]
       \State \texttt{Dataset S}
       \State \texttt{Error limit E}
@@ -215,7 +227,7 @@ The psudeuocode for the Line finding algorithm can be found here \ref{lineFindin
   \end{algorithmic}
 \end{algorithm}
 
-Just as explained in \ref{sec:line_find} the line finding algorithm takes a thick line and adjusts the k-value for each point that fits in the line. The function \texttt{Caluculate k of (start,p1)} just calculates the $k$ value of two points accordning to the regular linear equation $k = \frac{\delta y}{\delta x}$, the functions \texttt{calculate lower of line} and \texttt{calculate higher of line} calculates how thick the lines which checks errors are. Similair the function \texttt{Check if point is in bound} simply check if the point \texttt{p2} is within the margin of error. The most interesting function is \texttt{update k} which calculates a new $k$-value depending on the previous and how many points we already have evaluated. The weight is caluclated by $w = \frac{1}{number of points already evaluated}$ and the new $k$ is caluculated according $k = (1-w)*k + w*(new_k)$.
+Just as explained in section \ref{sec:line_find} the line finding algorithm takes a thick line and adjusts the k-value for each point that fits in the line. The function \texttt{Caluculate k of (start,p1)} just calculates the $k$ value of two points accordning to the regular linear equation $k = \frac{\delta y}{\delta x}$, the functions \texttt{calculate lower of line} and \texttt{calculate higher of line} calculates how thick the lines which checks errors are. Similair the function \texttt{Check if point is in bound} simply check if the point \texttt{p2} is within the margin of error. The most interesting function is \texttt{update k} which calculates a new $k$-value depending on the previous and how many points we already have evaluated. The weight is caluclated by $w = \frac{1}{number of points already evaluated}$ and the new $k$ is caluculated according $k = (1-w)*k + w*(new_k)$.
 
 \subsection{Decision Tree}
 When we had identified line characteristics in our measurements as described above we had raised the level of abstraction in our data. Instead of comparing point by point against each other in order to identify patterns we could now decide based on the characteristics to which class the given measurement belongs. After some research we deduced that a decision tree was a good way to proceed within the machine learning area of artificial intelligence.
@@ -227,9 +239,14 @@ Our classification problem were going to consist of more than simply two classes
 \subsubsection{Implementation}
 The algorithm that generates our decision tree is the well-known ID3 algorithm. Our exact implementation is based on the description and structure presented in \cite{aima}, however, a more formal presentation can be found in \cite{ml3}. As discussed in \cite{aima} our algorithm selects the attributes to split on by their information gain. In order to use real continuous values for the branches we use splitpoints.
 
-However, the process of aquiring good splitpoint values we use the process described in \cite{ml3}. The process of selecting a good splitpoint for a certain attribute is by sorting the examples by the attribute. The next step is to find all pairs of adjacent examples in the sorted list that differs in their classifications. For each pair, one calculates the information gain of the mean of the pair's values. Then it is simply to select the pair whose mean value maximizes the information gain.
+However, the process of acquiring good splitpoint values we use the process described in \cite{ml3}. The process of selecting a good splitpoint for a certain attribute is by sorting the examples by the attribute. The next step is to find all pairs of adjacent examples in the sorted list that differs in their classifications. For each pair, one calculates the information gain of the mean of the pair's values. Then it is simply to select the pair whose mean value maximizes the information gain.
+
+Even though decision trees that works with contionous values on the attributes are called regression trees, our tree is not a regression tree. We never switch over to do any kind of regression. For every attribute we simply have a splitpoint that separates the subtree in two branches, a so called binary split \cite{aima}.
 
 \section{RESULTS}
+
+\subsection{Parser}
+The result for the parser is pretty straightforward. Figures \ref{human}, \ref{doorhalf}, \ref{doorfull} and \ref{chair} have all been plotted using the cartesian coordinates that our parser have parsed and transformed. In all these plots the robot is located at origin and is heading forward along the y-axis. Furthermore, in all plots we have narrowed the field of view to 90 degrees and we only include points within 4 meters of the robot in order to provide a more clear plot with minimum noise. However, even though we have limited the number of points plotted our parser is able to include every point made by the laser range scanner.
 
 \subsection{Interpolation and Comparison}
 While implementing this algorithm we encountered several practical problems and eventually we relaized that this was not going to work very well. Therefore, we abandoned this approach and starting researching other ways resulting in the second idea explained above. Thus, we have no results to provide from this algorithm other than we never got it working.
@@ -237,7 +254,19 @@ While implementing this algorithm we encountered several practical problems and 
 \subsection{Line finding}
 This is the main algorithm we are using to represent datasets. 
 
+!!!TODO!!! Här måste vi lägga in biler på linjer som vi identifierat
+
+\subsection{Decision Tree}
+!!!TODO!!! Exempel träd
+
 \section{DISCUSSION}
+
+\subsection{Parser}
+The parser was relatively simple to develop, based on standard transformations from polar coordinates to cartesian coordinates. The only problems we had was specific to the laser range scanner. At first we assumed that points was listed in clockwise order but it was actually listed in counter-clockwise order according to mathematical notation.
+
+The biggest problem to overcome with the parser was that we only knew the angle between two adjacent points and not the absolute angle for each point. This led us to express the angle for each point as the absolute angle from the first point. Since we wanted to make our parser work for any laser range scanner we could not assume where the first point was located. Thus, our solution was to express the angle for each point as the angle between the point and the y-axis that we were to create. This was possible since we could calculate the field of view for the scanner, we knew that the y-axis was located exactly in the middle of the field of view. But, expressing the angle in this way meant that sinus and cosinus had to replace each other in the transformations as well as we had to explicitly manage the sign of the coordinates.
+
+However, other than this we did not have any major trouble with the parser.
 
 \subsection{Algorithms}
 
@@ -247,14 +276,24 @@ A stated above we realized that this algorithm would not work and we never finis
 The next problem to solve was that we realized that in principle we needed to overlay each measurement on the other and then glide them over each other in order to minimize the error between them. However, even the slightest shift could introduce huge errors. We never came up with a solution to this problem and instead we chose to abandon this approach and research other ways of classifying measurements.
 
 \subsubsection{Line finding}
-There are quite a lot of parameters that require tweakning in the line finding algorithm. The reasoning behind thease parameters will be explained here.
+There are quite a lot of parameters that require tweakning in the line finding algorithm. The reasoning behind these parameters will be explained here.
 
 \begin{description}
-\item[0.25 m lenght of line]: this parameter was chosen so as to not mistake feet for line, since on quite a lot of the datasets a couple of feet will turn up and most of the furniture has legs as well.
-\item[more than three points]: To determine a line more than 3 points has to be chosen, this parameter was chosen to be more than three so that the algorithm does not draw lines over huge gaps which consists of 2-3 points.
+\item[0.25 m lenght of line:] \hfill \\ This parameter was chosen so as to not mistake feet for line, since on quite a lot of the datasets a couple of feet will turn up and most of the furniture has legs as well.
+\item[more than three points:] \hfill \\ To determine a line more than 3 points has to be chosen, this parameter was chosen to be more than three so that the algorithm does not draw lines over huge gaps which consists of 2-3 points.
 \end{description}
- 
+
+!!!TODO!!! Här måste vi diskutera mer
+
+
+\subsubsection{Decision Tree}
+!!!TODO!!!
+
+\subsection{Improvements}
+!!!TODO!!!
+
 \section{CONCLUSION}
+!!!TODO!!!
 
 
 
@@ -288,8 +327,6 @@ There are quite a lot of parameters that require tweakning in the line finding a
 \bibitem{interpolation} here goes interpolation source
 
 \bibitem{legfinding}Xavier, Joao. Pacheco, Marco. Castro, Daniel. Ruano Antonio. Nunues, Urbano. Fast Line, Arc/Circle and Leg Detection from Laser Scan Data in a Player Driver, http://miarn.sourceforge.net/pdf/a1738b.pdf
-
-\bibitem{bla}blabla
 \bibitem{ml3} Mitchell, Tom M. Machine Learning. 1997. Chapter 3.
 \bibitem{praml} Bishop, Christopher M. 2006. Pattern Recognition and Machine Learning. Chapter 4, section 1.2.
 \bibitem{aima} Russel, Stuart. Norvig, Peter. Artificial Intelligence: A Modern Approach. Third edition. 2010. Chapter 18. 
