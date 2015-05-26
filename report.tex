@@ -234,6 +234,9 @@ However, the process of aquiring good splitpoint values we use the process descr
 \subsection{Interpolation and Comparison}
 While implementing this algorithm we encountered several practical problems and eventually we relaized that this was not going to work very well. Therefore, we abandoned this approach and starting researching other ways resulting in the second idea explained above. Thus, we have no results to provide from this algorithm other than we never got it working.
 
+\subsection{Line finding}
+This is the main algorithm we are using to represent datasets. 
+
 \section{DISCUSSION}
 
 \subsection{Algorithms}
@@ -243,6 +246,14 @@ A stated above we realized that this algorithm would not work and we never finis
 
 The next problem to solve was that we realized that in principle we needed to overlay each measurement on the other and then glide them over each other in order to minimize the error between them. However, even the slightest shift could introduce huge errors. We never came up with a solution to this problem and instead we chose to abandon this approach and research other ways of classifying measurements.
 
+\subsubsection{Line finding}
+There are quite a lot of parameters that require tweakning in the line finding algorithm. The reasoning behind thease parameters will be explained here.
+
+\begin{description}
+\item[0.25 m lenght of line]: this parameter was chosen so as to not mistake feet for line, since on quite a lot of the datasets a couple of feet will turn up and most of the furniture has legs as well.
+\item[more than three points]: To determine a line more than 3 points has to be chosen, this parameter was chosen to be more than three so that the algorithm does not draw lines over huge gaps which consists of 2-3 points.
+\end{description}
+ 
 \section{CONCLUSION}
 
 
@@ -276,7 +287,7 @@ The next problem to solve was that we realized that in principle we needed to ov
 \begin{thebibliography}{}
 \bibitem{interpolation} here goes interpolation source
 
-\bibitem{legfinding} http://miarn.sourceforge.net/pdf/a1738b.pdf
+\bibitem{legfinding}Xavier, Joao. Pacheco, Marco. Castro, Daniel. Ruano Antonio. Nunues, Urbano. Fast Line, Arc/Circle and Leg Detection from Laser Scan Data in a Player Driver, http://miarn.sourceforge.net/pdf/a1738b.pdf
 
 \bibitem{bla}blabla
 \bibitem{ml3} Mitchell, Tom M. Machine Learning. 1997. Chapter 3.
