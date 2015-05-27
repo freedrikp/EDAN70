@@ -276,24 +276,48 @@ A stated above we realized that this algorithm would not work and we never finis
 The next problem to solve was that we realized that in principle we needed to overlay each measurement on the other and then glide them over each other in order to minimize the error between them. However, even the slightest shift could introduce huge errors. We never came up with a solution to this problem and instead we chose to abandon this approach and research other ways of classifying measurements.
 
 \subsubsection{Line finding}
-There are quite a lot of parameters that require tweakning in the line finding algorithm. The reasoning behind these parameters will be explained here.
+There are quite a lot of parameters that require tweaking in the line finding algorithm. The reasoning behind these parameters will be explained here.
 
 \begin{description}
 \item[0.25 m lenght of line:] \hfill \\ This parameter was chosen so as to not mistake feet for line, since on quite a lot of the datasets a couple of feet will turn up and most of the furniture has legs as well.
 \item[more than three points:] \hfill \\ To determine a line more than 3 points has to be chosen, this parameter was chosen to be more than three so that the algorithm does not draw lines over huge gaps which consists of 2-3 points.
 \end{description}
 
-!!!TODO!!! Här måste vi diskutera mer
+!!!TODO!!! Här måste vi diskutera mer, måste skriva att vi inte hade tid
 
 
 \subsubsection{Decision Tree}
-!!!TODO!!!
+!!!TODO!!! Måste skriva att vi inte hade tid att få det bra
 
 \subsection{Improvements}
-!!!TODO!!!
+There are several improvements that we have thought about in this project. The most obvious ones are the things we did not have time to implement. Furthermore, there are some improvements that we have philosophized about.
+
+In order for our classifier to work as it was intended, to identify different types of objects, we need to implement the one-vs-rest classifier as discussed above. As stated above we did not have time to implement more than one classifier. Thus, the improvement is to train several more decision trees to be used in the classifier by combining them using the one-vs-rest technique.
+
+Another clear improvement is to implement more attributes and characteristics to detect in the measurement. The idea here is to use more than 4 attributes that can be gathered from the lines. Possibly we could use attributes such as the number of corners, number of corners that mirror each other and similar attributes. Also, an obvious improvement here is to extend the attributes to not just lines but to other patterns. For example, circles, rectangles and other shapes could be identified and suitable abstract attributes involving these shapes could be used as input to the decision trees.
+
+A nice feature to have in the classifier is unsupervised learning. This improvment can be quite easily implemted by regenerating each decision tree once a new classifiaction has been made. The classification would in this case be added to the examples that is used to generate the trees.
+
+The last obvious improvement is to implement the classifier as a ROS node so that it could be used online on the robot. This was part of our original goal with project but unfortunately we did not have time to fulfill that specific goal.
+
+These improvements are those that would make the classifier somewhat useful if combined together. The robot could travel around and at specific intervals it could output a classification of what it currently sees. For example, if it detects a door it outputs that fact and if it detects a human it would state that. The classifications can be sent to the programs that dictate movement so that, for example, a human would suddenly appear, the robot would stop.
+
+However, we do have some improvements that we believe might increase the performance of the classifier.
+
+Firstly, the line finding algorithm could be exchanged for a much better algorithm that really identifies the lines we have always wanted to identify. The main problem with our algorithm is that it is directly dependent on the index of each point in the measurement. We strongly believer that this improvement would have a major impact on the perfomance of the classifier as it exists now.
+
+Secondly, we have thought about another improvement which stems direclty from the fact that our initial approach failed. The problem was that we worked with individual points. The success came when we instead looked at lines and essentially raised the level of abstraction. Thus, we have philosophized about increasing the level of abstracion even further and introduce more layers to the classifer. For example, we use one classifier that looks at characteristics of lines and determine if certain shapes occur. One classifier could identify rectangles another triangles and so forth. Then the classifiers that actually detects doors, humans, open spaces e.t.c. base their decisions  on the output of these intermediate classifiers. This improvement is something we have just fantasized about and we can not in any way predict how the perfomance would be effected but it would be very interesting to test.
 
 \section{CONCLUSION}
-!!!TODO!!!
+During this project we have learned several lessons. Most of the lessons have come from the fact that we did not have a good idea of how to approach the problem in the beginning. Therefore, we attempted one approach that eventually proved to be to difficult to solve. However, in the end we did find an approach that we believe in but because we did not have much time left we could not implement is as fully as we would have liked.
+
+We learned quite late in the project that it was far better to raise the abstraction of the problem. This was hinted to us earlier in the project by our supervisor but we had no idea of how to approach the problem in that way. It was not after we had realized that the first approach was a failure that we were forced to make further research in order to find our next approach which made use of a higher abstraction level. It was here that we gained most knowledge, we realized that we could actually use decision trees to do pattern recognition. This was something that we would never have come up with from the beginning. However, even though we had found an approach that seemed pretty good there was not much time left before the end of the project. Therefore, we could only implement the simplest possible solution that actually yielded some result. The results were not astonishing but we believe that if the improvements listed above were to be implemented the results would be better.
+
+The biggest pitfalls in our project was that we did not put as much effort into research as we should have, at least not in the beginning. It was not until our second research phase that we actually found something we could use. However, we made one big error and that was to implement our own line finding algorithm. Had we done research on that we would have produced much better results. The biggest reason for us not doing this research was because of the limited time we had left.
+
+The main conclusion of this project is that it is better to approach this problem by looking at a higher level than on idividual points. This meant that an algorithm could take pretty abstract attributes as input in order to solve the problem.
+
+We did not manage to meet all our goals and this was primarily because of the limited time. We would like to have been able to classify several different kinds of objects as well as being able to run the classifier online on the robot using ROS. We would also had liked to use unsupervised learning to let the clasifier improve on itself. however, these improvements have been discussed in this report.
 
 
 
