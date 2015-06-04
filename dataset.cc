@@ -127,27 +127,40 @@ std::vector<Line> Dataset::determineLines(double threshold){
 	detta är helt enkelt medelvärdet för de två dvs: startK =(startK + newK)/2 (detta händer enbart om det är under threshold).
 	*/
 	std::vector<Line> lineVector;
-	unsigned start = map.size()-1;
+	unsigned start = 0;
 	Point startPoint = map[start];
 	bool done = false;
 	while(!done){
 		unsigned index = 1;
-		if(start-index <= 0){
+		if(start+index >= map.size()){
 			done = true;
 			break;
 		}
-		Point p1 = map[start-index];
+		Point p1 = map[start+index];
+		if(p1.distanceTo(startPoint)>0.3){
+			start++;
+			startPoint = p1;
+			continue;
+		}
 		double startK = startPoint.calcK(p1);
 		bool isLine = true;
     double errLimit = threshold;
+    std::cout << "---------------------------------------------------------------------------------" << std::endl;
+    std::cout << "---------------------------------------------------------------------------------" << std::endl;
 		while(isLine){
 			++index;
-			if(start-index <= 0){
+			if(start+index >= map.size()){
 				done = true;
 				break;
 			}
-			Point p2 = map[start-index];
+			Point p2 = map[start+index];
+			if(p2.distanceTo(p1)>0.3){
+				isLine = false;
+				break;
+			}
 			double m = startPoint.getYCoord() - startK*startPoint.getXCoord();
+			double mountain = (p2.getYCoord()-m)/startK + errLimit;
+			double valley = (p2.getYCoord()-m)/startK - errLimit;
 			double upper = startK * p2.getXCoord() + m + errLimit;
 			double lower = startK * p2.getXCoord() + m - errLimit;
 			if(lower>upper){
@@ -155,14 +168,19 @@ std::vector<Line> Dataset::determineLines(double threshold){
 				upper = lower;
 				lower = temp;
 			}
+			if(valley>mountain){
+				double temp = mountain;
+				mountain = valley;
+				valley = temp;
+			}
 			double dist = startPoint.distanceTo(p2);
 			double newK = startPoint.calcK(p2);
 			//double newK = p1.calcK(p2);
 			//double err = (std::atan(std::abs((newK - startK)/(1 + (newK*startK)))))*180/3.141592;
       //std::cout << "Error: " << err*dist*10 << " point: " << start-index << " Angle: " << (std::atan(std::abs((newK - startK)/(1 + (newK*startK)))))*180/3.141592 << "dist: " << dist << std::endl;
-			//std::cout << "lower: " << lower << " ycoord: " << p2.getYCoord() << " upper: " << upper << std::endl;
-				//std::cout << "start: " << start << " next point: " << start-index << " startK: " << startK << " newK: " << newK /*<< " newStartK: " << val*/ << std::endl;
-			if(lower<=p2.getYCoord() && p2.getYCoord()<=upper){
+			std::cout << "lower: " << lower << " ycoord: " << p2.getYCoord() << " upper: " << upper << " valley " << valley << " mountain " << mountain << std::endl;
+			std::cout << "start: " << start << " next point: " << start+index << " startK: " << startK << " newK: " << newK /*<< " newStartK: " << val*/ << std::endl;
+			if(lower<=p2.getYCoord() && p2.getYCoord()<=upper || valley<=p2.getXCoord() && p2.getXCoord() <= mountain){
 				double w = 1.0/index;
 				double val = (1-w)*startK + w*newK;
 				startK = val;
@@ -180,9 +198,10 @@ std::vector<Line> Dataset::determineLines(double threshold){
 			double m = startPoint.getYCoord() - startPoint.getXCoord() * startK;
 			Line l(startK,m,length);
 			lineVector.push_back(l);
-			//std::cout << "----------------added line----------" << std::endl;
+			std::cout << "----------------added line----------" << std::endl;
 		}
-		start -= index-1;
+			std::cout << "length: " << length << " nbr points: " << index << std::endl;
+		start += index-1;
 		startPoint = p1;
 	}
 	return lineVector;
@@ -203,7 +222,7 @@ Attributes Dataset::lineAttributes(double err1, double err2, double err3){
 
 
   for (auto elem : vec){
-    std::cout << "K-value: " << elem.getK() << " M-value: " << elem.getM() << " Length: "<< elem.getLength() << std::endl;
+    std::cout << "K-value: " << elem.getK() << " M-value: " << elem.getM() << " Angle: " << atan(elem.getK())*360/(2*3.141592) << " Length: "<< elem.getLength() << std::endl;
     length += elem.getLength();
 		bool firstPara = true;
 		bool firstPerpend = true;
@@ -233,13 +252,13 @@ Attributes Dataset::lineAttributes(double err1, double err2, double err3){
       }
     }
   }
-  //std::cout << "Number of lines: " << vec.size() << std::endl;
+  std::cout << "Number of lines: " << vec.size() << std::endl;
   
-  //std::cout << "Mean length of lines: " << (length/vec.size()) << std::endl;
+  std::cout << "Mean length of lines: " << (length/vec.size()) << std::endl;
 
-  //std::cout << "Parallell lines: " << nbr_parallell << std::endl;
+  std::cout << "Parallell lines: " << nbr_parallell << std::endl;
 
-  //std::cout << "Perpendicular lines: " << nbr_perpend << std::endl;
+  std::cout << "Perpendicular lines: " << nbr_perpend << std::endl;
 
 	Attributes attributes(vec.size(),length/vec.size(),nbr_parallell,nbr_perpend);
 	return attributes;
