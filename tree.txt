@@ -1,0 +1,23 @@
+avglength = <=0.774125
+ nbroflines = <=4.0
+  perpendicular = <=4.0
+   parallell = <=3.0: no
+   parallell = >3.0: yes
+  perpendicular = >4.0
+   parallell = <=3.0: no
+   parallell = >3.0: no
+ nbroflines = >4.0
+  perpendicular = <=4.0
+   parallell = <=3.0: no
+   parallell = >3.0: yes
+  perpendicular = >4.0
+   parallell = <=3.0: yes
+   parallell = >3.0: yes
+avglength = >0.774125
+ nbroflines = <=4.0
+  perpendicular = <=4.0
+   parallell = <=3.0: no
+   parallell = >3.0: no
+  perpendicular = >4.0: no
+ nbroflines = >4.0: no
+
