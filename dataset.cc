@@ -145,8 +145,8 @@ std::vector<Line> Dataset::determineLines(double threshold){
 		double startK = startPoint.calcK(p1);
 		bool isLine = true;
     double errLimit = threshold;
-    std::cout << "---------------------------------------------------------------------------------" << std::endl;
-    std::cout << "---------------------------------------------------------------------------------" << std::endl;
+    //std::cout << "---------------------------------------------------------------------------------" << std::endl;
+    //std::cout << "---------------------------------------------------------------------------------" << std::endl;
 		while(isLine){
 			++index;
 			if(start+index >= map.size()){
@@ -178,8 +178,8 @@ std::vector<Line> Dataset::determineLines(double threshold){
 			//double newK = p1.calcK(p2);
 			//double err = (std::atan(std::abs((newK - startK)/(1 + (newK*startK)))))*180/3.141592;
       //std::cout << "Error: " << err*dist*10 << " point: " << start-index << " Angle: " << (std::atan(std::abs((newK - startK)/(1 + (newK*startK)))))*180/3.141592 << "dist: " << dist << std::endl;
-			std::cout << "lower: " << lower << " ycoord: " << p2.getYCoord() << " upper: " << upper << " valley " << valley << " mountain " << mountain << std::endl;
-			std::cout << "start: " << start << " next point: " << start+index << " startK: " << startK << " newK: " << newK /*<< " newStartK: " << val*/ << std::endl;
+			//std::cout << "lower: " << lower << " ycoord: " << p2.getYCoord() << " upper: " << upper << " valley " << valley << " mountain " << mountain << std::endl;
+			//std::cout << "start: " << start << " next point: " << start+index << " startK: " << startK << " newK: " << newK /*<< " newStartK: " << val*/ << std::endl;
 			if(lower<=p2.getYCoord() && p2.getYCoord()<=upper || valley<=p2.getXCoord() && p2.getXCoord() <= mountain){
 				double w = 1.0/index;
 				double val = (1-w)*startK + w*newK;
@@ -198,9 +198,9 @@ std::vector<Line> Dataset::determineLines(double threshold){
 			double m = startPoint.getYCoord() - startPoint.getXCoord() * startK;
 			Line l(startK,m,length);
 			lineVector.push_back(l);
-			std::cout << "----------------added line----------" << std::endl;
+			//std::cout << "----------------added line----------" << std::endl;
 		}
-			std::cout << "length: " << length << " nbr points: " << index << std::endl;
+			//std::cout << "length: " << length << " nbr points: " << index << std::endl;
 		start += index-1;
 		startPoint = p1;
 	}
