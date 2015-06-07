@@ -32,8 +32,8 @@ int main(int argc, char* argv[]){
 
   DIR *dir;
   struct dirent *ent;
+
   if ((dir = opendir ("yes")) != NULL) {
-    /* print all the files and directories within directory */
     while ((ent = readdir (dir)) != NULL) {
       if (ent->d_name[0] == '.'){
         continue;
@@ -42,13 +42,12 @@ int main(int argc, char* argv[]){
       doLineTest(file, argv,std::string("yes") + "/" + ent->d_name,"yes");
     }
   } else {
-    /* could not open directory */
     perror ("");
     return EXIT_FAILURE;
   }
   closedir (dir);
+
   if ((dir = opendir ("no")) != NULL) {
-    /* print all the files and directories within directory */
     while ((ent = readdir (dir)) != NULL) {
       if (ent->d_name[0] == '.'){
         continue;
@@ -59,8 +58,8 @@ int main(int argc, char* argv[]){
 
     }
     closedir (dir);
+    
   } else {
-    /* could not open directory */
     perror ("");
     return EXIT_FAILURE;
   }
