@@ -38,8 +38,6 @@ void Dataset::outputPlotFile(std::string dir, std::string fileName){
 /*Kod för att plotta ut ett interval*/
 Dataset Dataset::datasetInterval(double startAngle, double endAngle, double distance){
 
-  // int startIndex = ceil(startAngle/angleInc);
-  // int endIndex = ceil(endAngle/angleInc);
   int startIndex = ceil(startAngle/angleInc);
   int endIndex = floor(endAngle/angleInc);
   if(endIndex<startIndex){
@@ -50,7 +48,6 @@ Dataset Dataset::datasetInterval(double startAngle, double endAngle, double dist
 
   double newFieldOfView = endAngle - startAngle;
 
-  //  std::cout << "StartIndex: " << startIndex << " | "<< "EndIndex: " << endIndex << std::endl;
   int index = 0;
   for(int i = startIndex; i<=endIndex;++i){
     Point p = map.find(i)->second;
@@ -84,6 +81,8 @@ void Dataset::outputDatasetFile(std::string dir){
   }
 }
 
+
+/*parsing a datasetFile, given a filename parse that file as a datasetfile and create a dataset*/
 Dataset Dataset::parseDatasetFile(std::string name){
   std::ifstream file(name);
   if (file.is_open()){
@@ -113,19 +112,10 @@ Dataset Dataset::parseDatasetFile(std::string name){
   }
 }
 
+
+/*Find lines within this dataset depending on the threshold*/
 std::vector<Line> Dataset::determineLines(double threshold){
-	/*Har tweakat denna metoden lite för att få ut bättre resultat. Jag har testat den mot ett
-	par olika inputs och det verkar som den får rätt bra resultat även på rätt noisy inputfiler.
 
-	Det jag har gjort är att jämföra vinkeln mellan två olika linjer som är bestämmda från startpunkt->första punkten
-	och startpunkt -> andra punkten, vinkeln (låt oss kalla den v) mellan dessa måste vara mindre än threshold.
-	Dock har jag lagt till att beroende på anvståndet från orginalpunkten så har vi större felmarginal att röra oss på.
-	Dvs avståndet från start * err(v) < threshold. Och det verkar som detta ger ett väldigt bra resultat.
-	Har inte kollat matten för det men jag tror det kan vara en bra approximering till regression.
-
-	Förutom detta så uppdaterar jag startK varje iteration för att få en bättre approximerig till linjen,
-	detta är helt enkelt medelvärdet för de två dvs: startK =(startK + newK)/2 (detta händer enbart om det är under threshold).
-	*/
 	std::vector<Line> lineVector;
 	unsigned start = 0;
 	Point startPoint = map[start];
@@ -145,8 +135,6 @@ std::vector<Line> Dataset::determineLines(double threshold){
 		double startK = startPoint.calcK(p1);
 		bool isLine = true;
     double errLimit = threshold;
-    //std::cout << "---------------------------------------------------------------------------------" << std::endl;
-    //std::cout << "---------------------------------------------------------------------------------" << std::endl;
 		while(isLine){
 			++index;
 			if(start+index >= map.size()){
@@ -159,58 +147,49 @@ std::vector<Line> Dataset::determineLines(double threshold){
 				break;
 			}
 			double m = startPoint.getYCoord() - startK*startPoint.getXCoord();
-			double mountain = (p2.getYCoord()-m)/startK + errLimit;
-			double valley = (p2.getYCoord()-m)/startK - errLimit;
-			double upper = startK * p2.getXCoord() + m + errLimit;
-			double lower = startK * p2.getXCoord() + m - errLimit;
-			if(lower>upper){
-				double temp = upper;
-				upper = lower;
-				lower = temp;
+			double upperY = (p2.getYCoord()-m)/startK + errLimit;
+			double lowerY = (p2.getYCoord()-m)/startK - errLimit;
+			double upperX = startK * p2.getXCoord() + m + errLimit;
+			double lowerX = startK * p2.getXCoord() + m - errLimit;
+			if(lowerX>upperX){
+				double temp = upperX;
+				upperX = lowerX;
+				lowerX = temp;
 			}
-			if(valley>mountain){
-				double temp = mountain;
-				mountain = valley;
-				valley = temp;
+			if(lowerY>upperY){
+				double temp = upperY;
+				upperY = lowerY;
+				lowerY = temp;
 			}
 			double dist = startPoint.distanceTo(p2);
 			double newK = startPoint.calcK(p2);
-			//double newK = p1.calcK(p2);
-			//double err = (std::atan(std::abs((newK - startK)/(1 + (newK*startK)))))*180/3.141592;
-      //std::cout << "Error: " << err*dist*10 << " point: " << start-index << " Angle: " << (std::atan(std::abs((newK - startK)/(1 + (newK*startK)))))*180/3.141592 << "dist: " << dist << std::endl;
-			//std::cout << "lower: " << lower << " ycoord: " << p2.getYCoord() << " upper: " << upper << " valley " << valley << " mountain " << mountain << std::endl;
-			//std::cout << "start: " << start << " next point: " << start+index << " startK: " << startK << " newK: " << newK /*<< " newStartK: " << val*/ << std::endl;
-			if(lower<=p2.getYCoord() && p2.getYCoord()<=upper || valley<=p2.getXCoord() && p2.getXCoord() <= mountain){
+
+			if(lowerX<=p2.getYCoord() && p2.getYCoord()<=upperX || lowerY<=p2.getXCoord() && p2.getXCoord() <= upperY){
 				double w = 1.0/index;
 				double val = (1-w)*startK + w*newK;
 				startK = val;
-				// errLimit-=err;
-				/*handle line adding*/
 			}else{
 				isLine = false;
 				break;
 			}
 			p1 = p2;
 		}
-		/*add lines to datastructure*/
 		double length = startPoint.distanceTo(p1);
 		if(length>0.25 && index>3){
 			double m = startPoint.getYCoord() - startPoint.getXCoord() * startK;
 			Line l(startK,m,length);
 			lineVector.push_back(l);
-			//std::cout << "----------------added line----------" << std::endl;
 		}
-			//std::cout << "length: " << length << " nbr points: " << index << std::endl;
+
 		start += index-1;
 		startPoint = p1;
 	}
 	return lineVector;
 }
 
+/*Determine line attributes depending on the three error limits*/
 Attributes Dataset::lineAttributes(double err1, double err2, double err3){
   std::vector<Line> vec = determineLines(err1);
-  //std::cout << "Attributes: " << std::endl;
-  //std::cout << "Number of lines: " << vec.size() << std::endl;
   double length = 0;
   int nbr_parallell = 0;
   int nbr_perpend = 0;
@@ -227,11 +206,8 @@ Attributes Dataset::lineAttributes(double err1, double err2, double err3){
 		bool firstPara = true;
 		bool firstPerpend = true;
     for(auto elem1 : vec){
-      //check if it is not current element
       if(elem != elem1){
-        //calculate angle between lines
         double angle = (std::atan(std::abs((elem.getK() - elem1.getK())/(1 + (elem.getK()*elem1.getK())))))*180/3.141592;
-        //if angle = 0 + error margin, and the line has not already been checked.
         if(angle<err2 && already_checked_parallel.find(elem) == already_checked_parallel.end() && already_checked_parallel.find(elem1) == already_checked_parallel.end()){
           ++nbr_parallell;
           already_checked_parallel.insert(elem1);
@@ -239,7 +215,6 @@ Attributes Dataset::lineAttributes(double err1, double err2, double err3){
 				++nbr_parallell;
 				firstPara = false;
 			}
-          //if the angle is perpendicualr + error margin and the line has not already been checked.
         }else if(angle>(90-err3) && already_checked_perpend.find(elem) == already_checked_perpend.end()){
           ++nbr_perpend;
 			if(firstPerpend && already_checked_perpend.find(elem1) == already_checked_perpend.end()){
@@ -248,7 +223,6 @@ Attributes Dataset::lineAttributes(double err1, double err2, double err3){
 			}
           already_checked_perpend.insert(elem1);
         }
-		//std::cout << "Angle " << angle << " para: " << nbr_parallell << " perpend: " << nbr_perpend << std::endl;
       }
     }
   }
@@ -264,6 +238,8 @@ Attributes Dataset::lineAttributes(double err1, double err2, double err3){
 	return attributes;
 }
 
+
+/*Linear inperpolation of a dataset, outputs same dataset with size = points*/
 std::vector<std::pair<double,double>> Dataset::lerp(int points){
 
   std::unordered_map<int,double> cal;
@@ -284,18 +260,15 @@ std::vector<std::pair<double,double>> Dataset::lerp(int points){
     double x;
     double y;
     if(lower<i && i<higher){
-      /*make new point in data structure*/
       double progress = (i-lower)/(higher-lower);
       x = map[beg].getXCoord()*progress;
       y = map[beg].getYCoord()*progress;
       list.push_back(std::make_pair(x,y));
     }else if(lower == i){
-      /*point is equal to map[beg]*/
       x = map[beg].getXCoord();
       y = map[beg].getYCoord();
       list.push_back(std::make_pair(x,y));
     }else if(higher == i){
-      /*point is equal to map[end]*/
       x = map[end].getXCoord();
       y = map[end].getYCoord();
       list.push_back(std::make_pair(x,y));
