@@ -4,13 +4,10 @@
 
 class Point{
 public:
-  // Point(int index, double accumulatedAngle, double distance, double xCoord, double yCoord);
-
   Point(int index, double accumulatedAngle, double distance, double fieldOfView);
 
   Point(const Point& p) = default;
   Point() = default;
-  // Point& operator=(const Point& p) = delete;
 
   int getIndex();
   void setIndex(int index);
@@ -30,7 +27,7 @@ private:
   double xCoord;
   double yCoord;
 
-  /*std::pair<double,double>*/ void transform();
+  void transform();
 };
 
 
