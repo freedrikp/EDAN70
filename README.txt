@@ -11,3 +11,5 @@ Finally one can run our offline classifier program. This is called classifier an
 In this folder we have already run these things so the yes and no directories do contain files and there is a file containing a decision tree, called tree.txt.
 
 All programs are compiled by using the Makefile except the EDAN70 program which is coded in java. This have to be compiled on it's own by including the ssj.jar file. This is done like this: javac -cp .:ssj.jar decision trees/*.java and then it can be run like this: java -cp .:ssj.jar decision trees.EDAN70.
+
+makePlot.m is a matlab script that plots all files located in the plots directory.
